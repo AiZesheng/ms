@@ -1,0 +1,9 @@
+$http({
+    url: "http://localhost/angularjs/user/aa",
+    method: "GET",
+    params: {name: "张三",age: 18}
+}).success(function (data) {
+    alert(data);
+}).error(function(){
+    alert("失败");
+});

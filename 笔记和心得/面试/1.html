@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		#div1 {
+			width: 100px;
+			height: 100px;
+			background: #f00;
+			visibility: hidden;
+		}
+	</style>
+</head>
+<body>
+	<div id="div1"></div>
+	
+	<script>
+		var oDiv1 = document.getElementById('div1');
+		oDiv1.style.display = 'none'
+		oDiv1.onclick = function () {
+			alert(1)
+		}
+		// new Promise(function (resolve, reject) {
+		//     console.log('start new Promise...');
+		//     var timeOut = Math.random() * 2;
+		//     console.log('set timeout to: ' + timeOut + ' seconds.');
+		//     setTimeout(function () {
+		//         if (timeOut < 1) {
+		//             console.log('call resolve()...');
+		//             resolve('200 OK');
+		//         }
+		//         else {
+		//             console.log('call reject()...');
+		//             reject('timeout in ' + timeOut + ' seconds.');
+		//         }
+		//     }, timeOut * 1000);
+		// }).then(function (r) {
+		//     console.log('Done: ' + r);
+		// }).catch(function (reason) {
+		//     console.log('Failed: ' + reason);
+		// });
+		var pro = new Promise((resolve, reject) => {
+			setTimeout(() => {
+				var a = 10;
+				resolve(a);
+			}, 1000);
+		});
+		pro.then(data => {
+			var pro1 = new Promise((resolve, reject) => {
+				setTimeout(() => {
+					resolve(data)
+				}, 1000);
+			});
+			return pro1;
+		})
+		.then(data => {
+			alert(data)
+		})
+	</script>
+</body>
+</html>

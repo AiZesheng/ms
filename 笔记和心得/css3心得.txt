@@ -1,0 +1,50 @@
+遇到简单动画就用 transition: all 1s ease;
+复杂动画就用 animation: go 2s ease forwards;@keyframes go{0%...}
+如果想让动画无限执行就把forwards改成infinite
+在用animation的时候可以通过Js配合class来用
+
+在碰到延时的问题时 还是想到transition: all 2s ease 0.5s;
+
+点击文本框去掉边框 outline: medium;
+
+首行缩进 text-indent: 2em;
+
+设置字间距 letter-spacing: 1px;
+
+透明度：filter:alpha(opacity=80);
+
+解决子元素浮动wrapper保不住子元素的问题：浮动的元素的父级加上overflow:hidden;
+
+overflow: scroll; 内容多的时候出滚动条
+
+多行文字垂直居中：如果文字是用p标签包着的话 给p加上display: table-cell; vertival-align: middle; 给p的父级加上 display: table;
+
+当不知道高度的情况下 垂直居中: 父级元素相对定位 再加上position: absolute; top: 50%; transform: translateY(-50%);
+
+rem相对于html的字体大小 em相对于父级的字体大小
+解决用pre标签 文本不自动换行问题
+pre {
+    white-space: pre-wrap; /* css-3 */
+    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+弹性盒模型兼容ie10
+父级{
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: box;
+}
+子元素{
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -ms-flex: 1;
+    box-flex: 1;
+}
+ie浏览器兼容display: inline-block方法
+三条语句
+display: inline-block;
+*display: inline;
+zoom: 1;

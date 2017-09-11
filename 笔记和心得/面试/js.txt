@@ -1,0 +1,709 @@
+闭包：闭包就是能够读取其他函数内部变量的函数。“定义在一个函数内部的函数”。例如：
+var f1 = function(){
+	var num = 0;
+	var f2 = function(){
+		num++;
+	}();
+	alert(num);
+}();
+f2函数就是闭包
+闭包的两个好处：能够读取函数内部的变量；让这些变量的值始终保存在内存中；不会增加额外的全局变量；
+闭包实例：给多个div绑定事件
+var aDiv = document.querySelectorAll("div");
+for(var i=0; i<aDiv.length; i++){
+	function aa(num){
+		aDiv[i].onclick = function(){
+			alert(num);
+		};
+	}
+	aa(i);
+}
+闭包的缺点：
+1、使用闭包会涉及到跨作用域访问，每次访问都会导致性能损失；
+2、由于闭包会使得函数中的变量被保存在内存中，会消耗内存，所以不能滥用闭包，在ie中可能导致内存泄漏。解决方法是，在退出函数之前，将不使用的局部变量全部删除；
+
+apply和call的用法和区别
+作用：二者的作用都是使一个对象具有另一个对象的属性和方法 也就是继承
+用法：Function.call(obj) Function.apply(obj) 
+或者 Function.call(obj, arg1, arg2...,argn) Function.apply(obj, array);
+二者的区别仅仅就是参数不同 二者的第一个参数都是对象 apply最多只能有两个参数，第二个参数是数组。call可以有多个参数。
+Function.call(obj,val1,val2,val3) 和 Function.apply(obj,[val1,val2,val3])是等价的。
+apply函数最常用的写法是这样的: Function.apply(obj, arguments);
+
+bind函数 目前IE9+，ff4+，chrome7+支持此方法，opera和safari不支持
+bind方法会创建一个新的函数，称为绑定函数。用法：Function.bind(obj,var1,var2,...varn);
+例如：
+function f1(){
+	this.val = "张三";
+}
+function f2(){
+	
+}
+f2.prototype = new f1();
+var obj2 = new f2();
+var f3 = f1.bind(obj2);
+var obj3 = new f3();
+alert(obj3.val);
+
+//数组去重 利用js对象的特点 把数组中的原素赋给对象的键
+var arr = [1,1,2,3,2,4,5,4];  // ＝> [1,2,3,4,5]
+function f1(arr){
+	var rs = [];
+	var obj = {};
+	for(var i=0; i<arr.length; i++){
+		if(!obj[arr[i]]){
+			obj[arr[i]] = 1;
+			rs.push(arr[i]);
+		}
+	}
+	return rs;
+}
+	alert(f1(arr));
+
+//编写Fibonacci函数 [1,1,2,3,5,8,13...];
+function fib(num){
+	if(num == 0 || num == 1){
+		return 1;
+	}else{
+		return fib(num - 1) + fib(num - 2);
+	}
+}
+
+
+事件委托：利用事件冒泡的原理，把事件加到父级上，触发执行   事件委拖也叫事件代理
+事件委托的好处：
+1.提高性能
+2.新添加的dom原素还有之前的事件
+
+
+事件源：event.target(标准浏览器)  event.srcElement(ie)
+获取标签名：e.target.nodeName;
+
+jsonp: json + padding
+
+事件捕获阶段：事件从最上一级标签开始往下查找，直到捕获到事件目标(target)。
+事件冒泡阶段：事件从事件目标(target)开始，往上冒泡直到页面的最上一级标签。
+
+将数组转化为字符串且元素之间没有逗号：arr.join("");
+Array.slice函数 截取数组 反回数组
+Array.splice函数 替换数组元素 没有反回值 arr.splice(index, howmany, "item1");
+
+mvvm与mvc有什么不同：
+在mvc里，view是可以直接访问model的，model不依赖于view，而view是依赖于model的；
+在mvvm里，把数据绑定的工作放到一个js里实现，这个js的主要功能就是完成数据的绑定，就是把model绑定到元素上；
+
+跨域的3种方式：
+1.iframe，这种方式要求两个页面必须属于同一个基础域；
+2.通过script标签(通过jsonp)；
+3.通过后台代理的方式：
+当一个域向另一个域发送请求的时候，先将请求发送到本域的后台，本域的后台通过模拟http请求去访问其它域，再将返回的结果发送给前端；
+
+
+
+http.createServer(function (request, response) {
+
+	// 发送 HTTP 头部 
+	// HTTP 状态值: 200 : OK  这个200是状态码
+	// 内容类型: text/plain(无格式文本)
+	response.writeHead(200, {'Content-Type': 'text/plain'});
+
+	// 发送响应数据 "Hello World"
+	response.end('Hello World\n');
+}).listen(8888);
+ 
+http.createServer(function(req, res){
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+ 
+    // 解析 url 参数
+    var params = url.parse(req.url, true).query;  
+    //require("url") url模块主要用来解析字符串，处理get请求 使用url.parse方法
+    res.write("网站名：" + params.name);
+    res.write("\n");
+    res.write("网站 URL：" + params.url);
+    res.end();
+ 
+}).listen(3000);
+
+路由：针对不同的URL有不同的处理方式
+
+nodejs全局对象：
+__filename, __dirname, setTimeout, setInterval, clearTimeout, console, process
+
+var data = fs.readFileSync("./www/index.html");
+console.log(data.toString());
+
+fs.readFile("./www/index.html", function(err, data){
+	console.log(data.toString());
+})
+
+点透问题：
+A、B两个层，A在上，B在下；给A绑定tap事件，让A消失；但B如果被绑定了click事件或B里有a标签，这时点A，A消失后B的事件也会被触发，这就是点透现象；
+解决方法：
+1、	oPop.addEventListener('touchend', function(e){
+        this.style.display='none';
+        e.preventDefault();		//取消默认行为
+    });
+2、css3的 pointer-events  值设置为none意思是该元素不在是鼠标事件的目标
+oPop.addEventListener('touchend', function(e){
+	this.style.display='none';
+	oUn.style.pointerEvents='none';
+
+	setTimeout(function(){
+	    oUn.style.pointerEvents='auto';
+	}, 400);
+});
+
+3、引入fastclick.js
+FastClick.attach(document.body);
+接下来就全部使用click事件就行了
+
+在同时使用vue.js和jquery时 给dom绑定事件时要这么写：
+$(document).on("click", "#id", function(){});
+
+ng-if跟ng-show/hide的区别有哪些？
+1.ng-if="true"时 dom节点才会被创建 ng-if="false"相当于把dom给删了 ng-show="false" 相当于display: none Dom节点仍存在；
+2.ng-if会产生新作用域
+<p>{{text}}</p> //此时如果input改变，{{text}}不会改变
+<input type="text" ng-model="text" ng-if="true">
+
+angularjs 在页面中{{}}里可以写原生js语法吗？
+<p>{{parseInt(55.66)}}<p> 这样写不可以，但是如果在 $scope 中添加了这个函数：
+$scope.parseInt = function(x){
+    return parseInt(x);
+} 就可以了
+使用ng-repeat时如果数组中出现相同元素，就加个 track by $index
+<ul ng-repeat="x in arr track by $index">
+	<li>{{x}}</li>
+</ul>
+filter 有两种使用方法，一种是直接在页面里：
+<p>{{now | date : 'yyyy-MM-dd'}}</p>
+另一种是在 js 里面用：
+// $filter('过滤器名称')(需要过滤的对象, 参数1, 参数2,...)
+$filter('date')(now, 'yyyy-MM-dd hh:mm:ss');
+自定义 filter
+// 形式
+app.filter('过滤器名称',function(){
+    return function(需要过滤的对象,过滤器参数1,过滤器参数2,...){
+        //...做一些事情  
+        return 处理后的对象;
+    }
+});  
+
+// 栗子
+app.filter('timesFilter', function(){
+    return function(item, times){
+        var result = '';
+        for(var i = 0; i < times; i++){
+            result += item;
+        }
+        return result;
+    }
+});
+factory,service,provider的区别
+这仨都是用来封装类的，factory需要将service对象return出去，service不用 service返回的是一个实例化的对象；provider可以创建一个可以通过config配置的service
+factory:
+app.controller("myCtrl", function($scope, myFactory){
+	$scope.aa = myFactory.getAge();
+});
+app.factory("myFactory", function(){
+	var name = "张三";
+	var age = 18;
+	var service = {};
+	service.getName = function(){
+		return name;
+	};
+	service.getAge = function(){
+		return age;
+	};
+	return service;
+});
+service:
+app.controller("myCtrl", function($scope, myService){
+	$scope.aa = myService.getName();
+	$scope.bb = myService.getAge();
+});
+app.service("myService", function(){
+	var name = "张三";
+	var age = 18;
+	this.getName = function(){
+		return name;
+	};
+	this.getAge = function(){
+		return age;
+	};
+});
+angular组件传值通过link函数的attrs参数
+angular指令的scope:
+(1)若scope为false，则子组件的scope会继承父组件的scope，而且子组件scope会影响父组件的scope，二者互相影响；
+(2)若scope为true，子组件也会继承父组件的scope，但是子组件的scope不会影响父组件的scope，而父组件的scope会影响子组件的scope；
+(3)若scope为{}，子组件的scope为独立的scope，作用域与父组件完全隔离，互不影响；
+
+
+angular 的数据绑定采用什么机制？脏检查机制
+
+angularjs 常见面试题 https://segmentfault.com/a/1190000005836443
+
+http8种方法：OPTIONS、HEAD、GET、POST、PUT、DELETE、TRACE、CONNECT
+
+为什么把link写在head里？
+link写在head里目的就是为了先加载css再加载dom,如果先加载dom，万一dom很多的话页面就会先显示一个没有样式的页面，在显示一个有样式的页面；
+
+为什么把script写在body结尾？
+为了先加载dom再加载js，其实使用window.onload也能实现，但是这样做如果页面图片加载很慢，就会拖后js的加载；
+
+jq的文档就绪函数与原生js的window.onload有什么区别？
+window.onload是等页面上所有的图片、视频、音频都加载完，$(function(){})是等dom结构加载完；当页面上图片很多的时候，window.onload就在js部分会有明显的延迟；
+
+jq的 attr与prop有什么区别？
+对于HTML元素本身就带有的固有属性，在处理时，使用prop方法。
+对于HTML元素我们自己自定义的属性，在处理时，使用attr方法。
+
+为什么把静态资源放在另一个域名下 能提升页面性能
+
+
+AJAX的优点
+(1).在不刷新页面的情况下与服务器进行通信；减少用户等待时间，为用户带来更好的体验；
+(2).异步与服务器通信；优化了浏览器与服务器之间的沟通；
+(3).前端与后端负载平衡；AJAX可以把后端负担工作转嫁给前端，减轻服务器端负担；
+(4).基于标准被广泛支持；不需要下载浏览器插件或小程序，只需用户允许JacaScript在浏览器执行；
+(5).应用与界面分离；有利于前后端工作人员分工合作；
+
+ajax原理：通过XmlHttpRequest对象来向服务器发异步请求，从服务器获得数据，然后用javascript来操作DOM而更新页面。
+
+ajax步骤：
+1.创建XMLHttprequest对象
+2.使用该对象的open和send方法发送资源请求给服务器，即
+xmlhttp.open(method,url,async) method是get或post，async是true或false(true代表异步，false代表同步)
+xhttp.send();使用get方法发送请求到服务器。
+xhttp.send("name = 张三");使用post方法发送请求到服务器。但是使用post之前需要加上一句话
+obj.setRequestHeader("Content-Type","application/x-www-form-urlencoded; charset=utf-8;");  
+3.onreadystatechange函数，判断readyState状态； 如果async设置为false则不写onreadystatechange
+readyState有五种状态：
+　　0 (未初始化)： (XMLHttpRequest)对象已经创建，但还没有调用open()方法；
+　　1 (载入)：已经调用open() 方法，但尚未发送请求；
+　　2 (载入完成)： 请求已经发送完成；
+　　3 (交互)：可以接收到部分响应数据；
+　　4 (完成)：已经接收到了全部数据，并且连接已经关闭。
+关于status，由于它的状态有几十种，我只列出平时常用的几种：
+　　100——客户必须继续发出请求
+　　101——客户要求服务器根据请求转换HTTP协议版本
+　　200——成功
+　　201——提示知道新文件的URL
+　　300——请求的资源可在多处得到
+　　301——删除请求数据
+　　404——没有发现文件、查询或URl
+　　500——服务器产生内部错误
+
+实例： post提交数据
+var obj = new XMLHttpRequest();
+obj.open("post", "http://localhost/myCi/user/aa", true);
+obj.setRequestHeader("Content-Type","application/x-www-form-urlencoded; charset=utf-8;");   
+obj.send("name=张三&age=19");
+obj.onreadystatechange = function(){
+	if(obj.readyState == 4 && obj.status == 200){
+		alert(obj.responseText);
+	}
+};
+
+解释localStorage sessionStorage cookie   
+cookie最大4k localStorage最大5M session无上限 get提交最大2k post无上限
+session是存在服务端的，cookie和localStroage是存在客户端的
+
+XHTML 与 html4.01有什么不同：
+XHTML 元素必须被正确地嵌套；
+XHTML 元素必须被关闭；
+XHTML 标签名必须用小写字母；
+XHTML 文档必须拥有根元素；(必须有html标签)
+
+同源指的是：同协议，同域名和同端口。
+同源策略：阻止一个源加载另一个源中的资源。
+为什么要同源策略？
+如果没有同源策略，黑客会很容易使用js去攻击别人的网站。例如：一个黑客使用iframe将银行的登录页面嵌到他的页面上，当你输入账号密码时，他的页面就可以用js读取到你表单的内容；
+当浏览器同时打开两个页面www.baidu.com和www.google.com时，其中js1和js3都是百度的而js2是谷歌的，当第一个窗口要运行一个脚本时，便会进行同源检查，只有和www.baidu.com同源的脚本才会被执行；
+
+
+HTTP协议：超文本传输协议，该协议用来从万维网服务器传输超文本到本地浏览器；
+
+HTTP状态码：
+200 : 请求成功
+301 : 网页被永久转移到其它URL
+404 : 请求的网页不存在
+500 : 内部服务器错误
+
+websocekt原生方法：
+send(string) 发送消息  => emit
+onmessage方法  接收消息  => on
+ws.onmessage = function(e){
+	if(typeof e.data == "string"){
+		console.log(e.data);
+	}
+};
+
+// 创建一个Socket实例
+var socket = new WebSocket('ws://localhost:8080'); 
+// 打开Socket
+socket.onopen = function(event){
+	// 发消息
+  	socket.send('I am the client and I\'m listening!'); 
+  	// 收消息
+	socket.onmessage = function(event) { 
+    	console.log('Client received a message',event); 
+	}; 
+	// 关闭Socket.... 
+  	//socket.close()
+};
+
+enctype="multipart/form-data"
+
+ie6兼容性
+对块级元素设置margin时，会产生双倍margin(双边距)；解决方法：给元素加display: inline;
+内部盒模型超出父级时，父级被撑大；解决方法：给父级加个overflow：hiden;
+png图片不透明，引个js文件
+
+webpack与gulp的区别
+1.gulp是构建工具，可以配合各种插件做js压缩，less编译
+2.webpack是文件打包工具，可以把项目各种css、js文件等打包成一个文件，主要用于模块化方案，预编译模块方案
+
+vue style中加scoped是什么意思？
+如果加了scoped，那么该文件的css别的文件用不了，只对本文件有效
+
+如何判断数据类型：
+Object.prototype.toString.call(val)
+
+js基本数据类型：string、number、array、boolean、object、null、undefined
+
+js内置对象：String、Math、Date、Array、Event
+
+undefined和null有什么区别？
+声名了一个变量但没有赋值就是undefined，或者表示一个对象没有的属性;
+null用来表示尚未存在的对象;
+
+let和var的区别：
+let是块作用域，函数内部使用let定义后，对函数外部没有影响;
+let不能重复声名多次：
+let a = 1;
+let a = 2;
+console.log(a) // 1
+
+页面重排：当改变dom属性之后，页面布局会受到影响(例如改变了一个dom的height)，此时会发生重排也叫回流
+页面重绘：当改变dom属性之后，页面布局没有受到影响(例如改变了一个dom的color)，此时会发生重绘
+
+http: 应用层   TCP: 传输层   IP: 网络层
+TCP和UDP的区别：
+(1)TCP可靠UDP不可靠
+(2)TCP要求系统资源较多，UDP较少
+(3)流模式（TCP）与数据报模式(UDP)
+(4)TCP保证数据正确性，UDP可能丢包
+(5)TCP保证数据顺序，UDP不保证
+(6)TCP面向连接（如打电话要先拨号建立连接）;UDP是无连接的，即发送数据之前不需要建立连接。
+
+用弹性盒模型实现垂直水平居中
+display:flex;
+align-items:center; /* 垂直居中 */
+justify-content: center; /* 水平居中 */
+
+策略模式：当if else很多时 可以使用对象的写法使代码更简洁
+不用策略模式的代码：
+var calculateBouns = function (salary, level) {
+    if (level === 'A') {
+        return salary * 4;
+    }
+    if (level === 'B') {
+        return salary * 3;
+    }
+    if (level === 'C') {
+        return salary * 2;
+    }
+};
+console.log(calculateBouns(2000, 'C'));
+
+使用策略模式的代码：
+var obj = {
+    A: function (salary) {
+        return salary * 4    
+    },
+    B: function (salary) {
+        return salary * 3
+    },
+    C: function (salary) {
+        return salary * 2
+    }
+};
+var calculateBouns = function (salary, level) {
+    return obj[level](salary);
+};
+console.log(calculateBouns(2000, 'C'));
+
+dom树和渲染树：
+渲染树(render tree)：
+从DOM树根节点开始，遍历每一个可见的节点
+一些节点是完全不可见的（比如 script标签，meta标签等），这些节点会被忽略，因为他们不会影响渲染的输出，所以不在渲染树上
+<span style="display: none;"></span>
+一些节点是通过CSS样式隐藏了，这些节点同样被忽略——例如上例中的span节点在render tree中被忽略，因为span样式是display:none;
+“display:none”的元素是将节点从整个render tree中移除
+dom树就是所有的dom节点组成的树
+
+简单实现vue双向数据绑定
+<body>
+    <input type="text" id="input">
+    <span id="span"></span>
+    
+    <script>
+        var oInput = document.getElementById('input');
+        var oSpan = document.getElementById('span');
+        var obj = {};
+        Object.defineProperty(obj, 'hello', {
+            set: function (newval) {
+                oInput.value = newval;
+                oSpan.innerHTML = newval;
+            },
+        });
+        oInput.onkeyup = function (e) {
+            obj.hello = e.target.value;
+        };
+    </script>
+</body>
+
+promise:
+promise中的resolve(data) 这个data会传递给then(function (data) {})中的data;
+reject(data) 这个data会传递给catch(function (data) {})中的data
+在then方法里return的东西会传给下一个then
+链式操作：
+new Promise((resolve, reject) => {
+	setTimeout(() => {
+		var a = 10;
+		resolve(a);
+	}, 1000);
+})
+.then(data => {
+	data++;
+	return data;
+})
+.then(data => {
+	console.log(data)
+});
+
+var pro = new Promise((resolve, reject) => {
+	setTimeout(() => {	// 此处用setTimeout来模拟异步
+		var a = 10;
+		resolve(a);
+	}, 1000);
+});
+pro.then(data => {
+	var pro1 = new Promise((resolve, reject) => {
+		setTimeout(() => {
+			resolve(data)
+		}, 1000);
+	});
+	return pro1;
+})
+.then(data => {
+	alert(data);
+})
+
+js如何删除一个dom元素？
+先取到那个元素的父级，然后用removeChild删除
+oDiv1.parentNode.removeChild(oDiv1)
+removeChild这个函数返回的是被删除的dom元素
+也可以用jquery的remove方法删除dom
+$('#id').remove();
+createDocumentFragment() //创建一个DOM片段
+createElement() //创建一个具体的元素
+createTextNode() //创建一个文本节点
+appendChild() //添加
+removeChild() //移除
+replaceChild() //替换
+insertBefore() //插入
+
+webpack相关：
+1.webpack是干什么的？
+webpack是打包工具。那为什么需要打包？因为在开发时可能会出现一些浏览器不能识别的语言，如sass、less、TypeScript等。这都需要工具把它们“编译”成浏览器能识别 Javascript 和 CSS。webpack就是干这个的。
+2.loader
+默认情况下webpack只认识js文件，所以它只能打包js文件。在开发过程中，可能遇到其它类型的文件如：css、vue、sass。此时可以通过给 webpack 添加 loader 来让 webpack识别更多的文件类型比如：style-loader，css-loader
+3.webpack CLI 和webpack-dev-server和什么区别？
+Webpack CLI tool：默认的交互方式（已随Webpack本身安装到本地）
+webpack-dev-server：一个Node.js服务器（需要开发者从npm自行安装）
+Webpack CLI（有利于生产模式下打包）
+webpack-dev-server（有利于在开发模式下编译）
+4.entry
+entey配置项告诉Webpack应用的根模块或起始点在哪里
+
+5. output
+output项告诉webpack怎样存储输出结果以及存储到哪里
+
+
+6. webpack命令：
+(1)webpack         // 最基本的启动webpack的方法
+(2)webpack -w      // 提供watch方法；实时进行打包更新
+(3)webpack -p      // 对打包后的文件进行压缩
+(4)webpack -d      // 提供source map，方便调式代码
+
+js的数据类型：字符串、数字、布尔、数组、对象、Null、Undefined
+
+
+
+defer和async的区别：
+defer和async都是异步加载script标签，但是执行时间不一样，async是加载完就执行，defer是加载完等html解析完(是解析完不是加载完)执行
+如果没有defer和async，script标签是同步加载，而且加载完了就执行
+
+浏览器缓存相关：
+(1)什么时候会出现304?
+当在地址栏输入了一个地址一回车，此时先问http有没有缓存。
+如果有缓存，那就判断缓存是否过期。
+如果没过期就返回200。如果过期就看ETag的值是否改变，如果没变返回304
+如果ETag变了，看Last-Modified是否更新，如果有更新返回200，如果没更新返回304
+
+(2)什么是Last-Modified?
+在浏览器第一次请求某一个URL时，此时肯定不会有缓存，服务器端的返回状态会是200，内容是你请求的资源，同时有一个Last-Modified的属性标记此文件在服务期端最后被修改的时间，格式类似这样：
+Last-Modified: Fri, 12 May 2006 18:53:33 GMT
+客户端第二次请求此URL时，根据 HTTP 协议的规定，浏览器会向服务器传送 If-Modified-Since 报头，询问该时间之后文件是否有被修改过：
+If-Modified-Since: Fri, 12 May 2006 18:53:33 GMT
+
+(3)什么是ETag?
+ETag是一个可以与Web资源关联的记号
+
+vue-router原理：
+1.如果实现对地址变更的监听？
+通过监听 hashChange 事件来实现：
+window.addEventListener('hashchange', () => {
+  // this.transitionTo(...)
+})
+地址变更如何通知到 vm？
+hashchange 时，执行 history.transitionTo(...)
+地址变更如果同步视图更新？
+调用到 <router-view> 的 render() 
+<router-view> 的 render() 采用函数调用（h()）模式
+
+前端性能优化：
+1.减少http请求
+主要方法：
+(1)将大的图片压缩
+(2)css sprites 
+(3)图片懒加载
+2.减少对dom的操作：
+不要在for循环中取dom，取完dom元素之后保存在变量中
+3.js标签放到body标签结束之前
+
+一次完整的HTTP事务是怎样的一个过程？
+
+基本流程：
+a. 域名解析
+b. 发起TCP的3次握手
+c. 建立TCP连接后发起http请求
+d. 服务器端响应http请求，浏览器得到html代码
+e. 浏览器解析html代码，并请求html代码中的资源
+f. 浏览器对页面进行渲染呈现给用户
+
+谈谈垃圾回收机制方式及内存管理
+垃圾回收机制—GC
+原理：垃圾收集器会定期（周期性）找出那些不在继续使用的变量，然后释放其内存。
+不再使用的变量也就是生命周期结束的变量，当然只可能是局部变量，全局变量的生命周期直至浏览器关掉页面才会结束。
+GC方案：
+（1）遍历所有可访问的对象。
+（2）回收已不可访问的对象。
+GC的缺陷：GC时，停止响应其他操作
+GC优化策略：
+(1)分代回收：目的是通过区分“临时”与“持久”对象。多回收“临时对象”区（young generation），少回收“持久对象”区（tenured generation），减少每次需遍历的对象，从而减少每次GC的耗时。
+(2)增量GC：就是“每次处理一点，下次再处理一点，如此类推。
+
+开发过程中遇到的内存泄露情况，如何解决的？
+
+var aa = 10;
+function b () {
+	alert(aa);
+	var aa = 20;
+}
+b();	// 结果为undefined
+
+for (var i = 0; i < 5; i++) {
+	setTimeout(() => {
+		console.log(i)		// 2s之后结果为5个5，并且中间没有间隔
+	}, 2000)
+}
+
+逆名函数如何递归？
+function fibonacci(num) {
+    return (function(num) {
+        if (typeof num !== "number") return -1;
+        num = parseInt(num);
+        if (num < 1) return -1;
+        if (num == 1 || num == 2) return 1;
+        return arguments.callee(num - 1) + arguments.callee(num - 2);
+    })(num);
+}
+fibonacci(100);
+
+接下来promise、网络安全、性能优化、vue-router、缓存、http协议、webpack、设计模式、http和https有什么区别、数据结构、算法、克隆对象
+
+
+
+echarts3
+ajax
+webpack
+gulp
+vuejs
+设计模式
+
+面向对象与面向过程的区别
+
+http和https的区别：
+http是超文本传输协议，信息是明文传输
+https则是具有安全性的ssl加密传输协议
+http和https使用的是完全不同的连接方式用的端口也不一样,前者是80,后者是443。
+
+任何数据链路层协议必须解决的三个基本问题是什么？
+封装成帧、透明传输、差错检测
+
+数据的传输时延与传播时延有什么区别？说明这两种时延产生的位置。
+
+网络协议是由哪三部分组成？
+语法、语义和时序三部分组成
+
+数据链路层的传送单位是什么？比特
+
+网络层可以向上提供两种服务分别是什么？
+虚电路服务和数据报服务
+
+IP4到IP6的过渡技术主要有哪些？
+双协议栈技术和隧道技术
+
+知名端口的取值范围？ 
+0～1023
+动态端口的取值范围？
+1024～65535
+
+域名到IP地址的转换使用的是什么？
+DNS协议
+
+DNS协议是运行在什么协议之上的？
+UDP，使用端口号53
+
+OSI模型的七个层次分别是什么？
+从低到高：物理层、数据链路层、网络层、传输层、会话层、表示层、应用层
+
+网络层的主要目的是什么？
+在任意节点间进行数据报传输
+
+网络协议是不同结点中相同层对等实体之间的通信规则与约定
+
+A类地址：1～126
+B类地址：128～191
+C类地址：192～223
+
+数据链路层的协议数据单元通常被称为什么？ 帧
+
+计算机网络通信的一个显著特点是什么？
+间歇性和突发性
+
+
+
+
+
+
+
+
+
+
+
+
+		

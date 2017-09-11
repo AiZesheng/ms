@@ -1,0 +1,9 @@
+先npm install express  然后创建一个文件夹www 这个文件夹放前端代码 包括html、css、js
+var express = require("express");
+var app = express();
+app.listen(3000);
+app.use("/", express.static(__dirname + "/www"));
+app.use("/login", express.static(__dirname + "/www/login.html")); //localhost:3000/login
+app.get("/do_login", function(req, res){	//开个接口
+    res.send("张三");
+});

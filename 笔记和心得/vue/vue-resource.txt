@@ -1,0 +1,18 @@
+前端：
+mounted(){
+  this.$http.jsonp('http://localhost/book_php/user/regist', {
+    username: this.username,
+    password: this.password,
+    nickname: this.nickname
+  }, {jsonp: 'callback'}).then(function (res) {
+    console.log(res.data[0].nickname);
+  }, function (res) {
+    console.log(res.status);
+  });
+}
+后端：
+$callback = $this->input->get("callback");
+$this->load->model("user_model");
+$rs = $this->user_model->get_by_username_password();
+$json = json_encode($rs);
+echo $callback . '(' . $json . ')';

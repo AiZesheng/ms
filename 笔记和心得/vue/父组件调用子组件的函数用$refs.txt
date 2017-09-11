@@ -1,0 +1,37 @@
+父组件：
+<template>
+	<div>
+		<childComponent ref="child"></childComponent>
+	</div>
+</template>
+<script>
+  import childComponent from './child.vue'
+  export default {
+    components: {
+      childComponent
+    },
+    mounted () {
+      this.$refs.child.aa('hello world')
+    }
+  }
+</script>
+<style lang="scss">
+  
+</style>
+
+子组件：
+<template>
+	<div>我是子组件</div>
+</template>
+<script>
+  export default {
+    methods: {
+      aa (mes) {
+        alert(mes)
+      }
+    }
+  }
+</script>
+<style lang="scss">
+  
+</style>

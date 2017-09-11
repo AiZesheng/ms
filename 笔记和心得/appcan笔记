@@ -1,0 +1,145 @@
+1.一般情况下将header和footer或者不能拖的这种固定结构写在index.html文件中
+  把能够上托下拉的部分写在index_content.html文件中
+2.所有单机事件都用angularjs的ng-click写
+3.跳转页面
+appcan.button("#open", "ani-act", function(){ //第一个参数是按钮id
+    appcan.window.open({   //如果把window改成frame那就跳浮动窗口
+        name: "login",
+        data: "login.html",	//跳转到哪个页面
+        aniId: 10
+    });
+});
+
+4.注册功能的实现：
+appcan.button("#submit", "ani-act", function() {   // 给注册按钮绑定事件
+    reg();
+})
+// 后台使用php的ci框架
+function reg(){
+    // 获取信息
+    var email = $("#email").val();
+    var username = $("#username").val();
+    var password = $("#password").val();
+    var password2 = $("#password2").val();
+    // 判断密码是否一致
+    if(password != password2){
+        appcan.window.openToast("两次密码不一致",3000,5,0);
+    }else{
+        $.get("http://localhost/appcan/user/login", {
+            "email" : email,
+            "username" : username,
+            "password" : password
+        }, function(data){
+            alert(data);
+        },"text");
+     }
+}
+从后台把一堆数据查出来，并输出到页面上
+后台：
+$this->load->model("shop_model");
+$result = $this->shop_model->get_all();
+if($result){
+	echo json_encode($result);
+}
+前端：
+$.get("http://127.0.0.1/appcan/shop/index", {}, function(data){
+    for(var i=0; i<data.length; i++){
+       $(".tab").append('<li>'
+        +'<h3>'+data[i].name+'</h3>'
+        +'<p>'+data[i].details+'</p>'
+       +'<div>'+data[i].distance+'</div>'
+        +'</li>');
+    }
+},"json");
+5.如果要用到angularjs 那么angularjs一定要在appcan.js之前引入
+    所有点击事件(除了页面跳转)都用angularjs的ng-click
+6.城市定位 直接粘下面的代码
+    //城市定位功能
+    //1.打开定位功能,监听并返回设备所在地的经纬度信息
+    //下面的2个参数,只针对IOS系统
+    var locLevel = 0;
+    //定义一个准确度
+    var distanceFilter = 10;
+    //定义一个更新距离
+    uexLocation.openLocation(locLevel, distanceFilter);
+    //2.成功获取位置信息,通过onChange()方法返回
+    uexLocation.onChange = function(lat, log) {
+        //3.获取到经纬度对应的具体地址信息
+        uexLocation.getAddress(lat, log, 1);
+    };
+    //4.获取到位置信息返回经纬度数据的回调方法
+    var oCity = document.getElementById("city");
+    var city = "";
+    uexLocation.cbGetAddress = function(opCode, dataType, data) {
+        var json = data.replace(/\"{/g, '[{');
+        var json = json.replace(/\}"/g, '}]');
+        var jsonData = $.parseJSON(json);
+        city = jsonData.addressComponent.city;
+    };
+    var timer = setInterval(function(){
+        oCity.innerHTML = city;
+        if(oCity.innerHTML != "正在定位"){
+            clearInterval(timer);
+        }
+    }, 3000);
+7.扫一扫功能
+//扫一扫功能
+var oScanner = document.getElementById("scanner");
+oScanner.onclick = openScanner;
+function openScanner() {
+    var callback = function(error, data) {
+        if (!error) {
+            alert("data:" + JSON.stringify(data));
+        } else {
+            alert("failed!");
+        }
+    };
+    uexScanner.open(callback);
+}
+8.退出程序
+uexWidgetOne.exit();
+9.监听返回键 (下面代码必须写在appcan.ready函数里)
+uexWidgetOne.cbGetPlatform = function (opId, dataType, plat) {
+    if (plat) {
+        var count = 0
+        uexWindow.onKeyPressed = function (keyCode) {
+            if (keyCode == 0) {
+                if (count == 0) {
+                    uexWidgetOne.exit();
+                }
+                count = count + 1;
+                setTimeout(function () {
+                    count = 0;
+                }, 2000);
+                if (count > 1) {
+                    uexTosatMsg.close();
+                    uexWidgetOne.exit(0);
+                }
+            }
+
+        }
+        uexWindow.setReportKey(0, 1);
+        uexWindow.setReportKey(1, 1);
+
+    }
+};
+uexWidgetOne.getPlatform();
+
+10.input 选择完图片后立即显示 网页上也好使
+$("#file").on("change", function (e) {
+    if (!window.FileReader) alert("no");
+    var files = e.target.files;
+    for (var i = 0, f; f = files[i]; i++) {
+        if (!f.type.match('image.*')) {
+            continue;
+        }
+        var reader = new FileReader();
+        reader.onload = (function (theFile) {
+            return function (e) {
+                // img 元素
+                $("#img").attr("src", e.target.result);
+            };
+        })(f);
+        reader.readAsDataURL(f);
+    }
+});

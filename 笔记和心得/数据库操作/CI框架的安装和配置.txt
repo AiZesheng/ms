@@ -1,0 +1,46 @@
+1.CI框架的安装：只需将application、system、index.php复制到项目中即可。
+  	(1)application: 是项目的工程目录，我们自己编写的代码需要放在这个文件夹中。
+  		其中一些重要的文件或文件夹包括：
+  		a. config: 配置系统的一些参数
+  		b. controllers: 控制器
+  		c. helpers: CI的帮助文件，主要用来定义函数库
+  		d. hooks: 钩子文件
+  		e. models: 模型，主要就是数据库的操作
+  		f. views: 视图，就是用户看到的界面
+  	(2)system: 是CI的系统核心文件夹，除特殊需求，不需要修改。
+  	(3)index.php: 是项目的入口文件
+2.CI的配置
+	(1)autoload.php
+      a. $autoload['helper'] = array('url');
+      b. $autoload['libraries'] = array('database');
+  (2)config.php
+      a.$config['index_page'] = 'index.php'; 改成 $config['index_page'] = '';
+  (3)database.php
+      'hostname' => 'localhost',
+      'username' => 'root',
+      'password' => '',
+      'database' => 'myblog',
+3.MVC模式
+  (1)MVC(Model View Controller,模型 视图 控制器)
+      a. view: 是用户可以看得到的程序界面
+      b. controller: 控制整个程序的流程和跳转，具体来说主要有负责三个操作：
+        1.接收数据 
+          a) 客户端主要有三种方式提交请求：地址栏直接输入地址(get)、超链接(get)、提交表单(post)
+          b) 不管上面的哪种方式提交的请求，必须由controller来负责接收
+        2.访问数据库 
+          调用相应的model
+        3.页面跳转  
+          a) load -> view
+          b) redirect
+      c. model: 主要就是用来负责对数据库的增、删、改、查
+        1) 一些好的建议：
+          a) 数据库中有一张表(如 t_user),那么应该有一个对应的model文件，命名规则是
+             表名_model.php,即user_model.php该文件是一个类，类的定义规则应该是：
+             class User_model extends CI_Model,类名的首字母要大写！
+          b) 除了model文件应该与表对应，controller也一样对应，即有t_user表，同时也应该
+             有user.php的控制器文件，同样的控制器的类名应该与文件名一致，但首字母大写  
+ 
+
+
+注意：img文件夹就放在项目文件夹根目录下，不要放在application文件夹下  
+有了这个<base href="<?php echo site_url();?>">之后img标签就可以正常写了

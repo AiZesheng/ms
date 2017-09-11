@@ -1,0 +1,8 @@
+npm install express-formidable
+var formidable = require("express-formidable");
+app.use(formidable({
+    encoding: "utf-8",
+    uploadDir: __dirname + "/img",
+    multiples: true,
+    keepExtensions: true	//是否保留扩展名
+}));

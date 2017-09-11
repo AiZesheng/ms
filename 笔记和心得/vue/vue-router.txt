@@ -1,0 +1,28 @@
+使用vue-router的步骤：
+1.import VueRouter from 'vue-router';
+2.Vue.use(VueRouter);
+3.
+let router = new VueRouter({
+  routes: [
+    {
+      path: '/',
+      component: Index
+    },
+    {
+      path: '/Index',
+      component: Index
+    },
+    {
+      path: '/Product',
+      component: Product
+    },
+    {
+      path: '/About',
+      component: About
+    }
+  ]
+});
+// 那些componet要先import引入
+4.router.push("/Index");	//根据需求设置默认路由
+
+路由重定向：this.$router.push("/login");

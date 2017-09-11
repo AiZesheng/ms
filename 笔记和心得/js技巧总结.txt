@@ -1,0 +1,38 @@
+jquery中判断两个DOM元素是否相等：if( $(a).is( $(b) ) == true )
+
+js跳转页面 window.location = "地址";
+
+for(var i=0;i<opLi.length;i++){
+	opLi[i].onclick=function(){
+		this.style.background="yellow";
+		opImg[0].src=imgArry[i];
+	}
+}
+
+/*
+	以上代码错误
+	for循环下面出现函数,那么函数中的i就不好使了
+	正确的写法是事先定义一个自定义属性num与i同步
+*/
+
+for(var i=0;i<opLi.length;i++){
+	opLi[i].num=i;
+	opLi[i].onclick=function(){
+		this.style.background="yellow";
+		opImg[0].src=imgArry[this.num];
+	}
+}
+
+// 获取元素属性
+function getStyle(obj,attr){
+	return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+}
+
+判断数组中是否存在某个元素
+if(arr.indexOf(a) > -1){
+	console.log("已存在");
+}else{
+	console.log("没有");
+}
+
+判断checkbox是否被选中：var bClick = $("#remember").is(":checked");
