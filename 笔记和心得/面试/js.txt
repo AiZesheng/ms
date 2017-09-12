@@ -85,8 +85,6 @@ jsonp: json + padding
 事件冒泡阶段：事件从事件目标(target)开始，往上冒泡直到页面的最上一级标签。
 
 将数组转化为字符串且元素之间没有逗号：arr.join("");
-Array.slice函数 截取数组 反回数组
-Array.splice函数 替换数组元素 没有反回值 arr.splice(index, howmany, "item1");
 
 mvvm与mvc有什么不同：
 在mvc里，view是可以直接访问model的，model不依赖于view，而view是依赖于model的；
@@ -97,6 +95,17 @@ mvvm与mvc有什么不同：
 2.通过script标签(通过jsonp)；
 3.通过后台代理的方式：
 当一个域向另一个域发送请求的时候，先将请求发送到本域的后台，本域的后台通过模拟http请求去访问其它域，再将返回的结果发送给前端；
+
+slice和splice的区别
+1. splice的功能是用来删除数组中的一部分数据，slice是用来截取一部分数据
+2. splice会改变原数组，但slice不会改变原数组。
+3. splice只能用于数组，不能用于字符串。
+
+substring和substr的区别
+1. substring(4,7) === substring(7,4)  substring是从两个参数中较小的那个截到较大的前一个
+2. substr(index, num)是从第index号开始截num个
+3. substr(num) === substring(num)
+
 
 
 
@@ -633,7 +642,53 @@ function fibonacci(num) {
 }
 fibonacci(100);
 
-接下来promise、网络安全、性能优化、vue-router、缓存、http协议、webpack、设计模式、http和https有什么区别、数据结构、算法、克隆对象
+js变量提升
+var v='Hello World'; 
+(function(){ 
+	alert(v); 	// 这个弹出Hello World
+})() 
+
+var v='Hello World'; 
+(function(){ 
+	alert(v); 	// 这个弹出undefined
+})() 
+var v = 'I love you'
+变量提升就是把下面的东西提升到上面，在js中就是把定义在后面的变量或函数提升到前面定义
+第二段代码的执行顺序是：
+(1) var v;	// 此时v = undefined
+(2) v = 'Hello World!'
+(3) var v; // 此时v又变成了undefined
+(4) alert(v) // 弹出undefined
+(5) v = 'I love you'
+
+var a = 123;
+(function () {
+	alert(a);	// 弹undefined
+	var a = 456;	// 这一行，如果把关键字var去掉，那就弹123
+})()
+
+js函数提升
+function t1 (age) {
+    console.log(age);
+    var age = 27;
+    console.log(age);
+    function age () {}
+    console.log(age);
+}
+t1(3);
+输出结果：
+function age () {}
+27
+27
+原因：函数提升的优先级要高于变量提升，这段代码先执行function age () {}，所以第一个输出function age () {}
+
+BFC是什么？
+是 W3C CSS 2.1 规范中的一个概念，它决定了元素如何对其内容进行定位，以及与其他元素的关系和相互作用。
+怎样才能形成BFC？
+(1) float的值不为none
+(2) overflow的值不为visible
+(3) display的值为table-cell、table-caption、inline-block中的任何一个
+(4) position的值不是relative和static
 
 
 
