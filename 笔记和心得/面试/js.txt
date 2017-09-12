@@ -443,6 +443,48 @@ var calculateBouns = function (salary, level) {
 };
 console.log(calculateBouns(2000, 'C'));
 
+观察者模式：（又叫发布/订阅模式）是js中最常见的设计模式
+oDiv1.onclick = function () {
+	alert(this)
+}
+
+代理模式：（这个是最容易理解的，代理其实就是由中间人替别人完成这件事）
+事件代理就是用的代理模式。
+// 先声明美女对象
+var girl = function (name) {
+    this.name = name;
+};
+
+// 这是dudu
+var dudu = function (girl) {
+    this.girl = girl;
+    this.sendGift = function (gift) {
+        alert("Hi " + girl.name + ", dudu送你一个礼物：" + gift);
+    }
+};
+
+// 大叔是代理
+var proxyTom = function (girl) {
+    this.girl = girl;
+    this.sendGift = function (gift) {
+        (new dudu(girl)).sendGift(gift); // 替dudu送花咯
+    }
+};
+
+工厂模式：（其实没啥用）
+function Parent () {  
+	var Child = new Object();  
+		Child.name="李小龙";  
+		Child.age="30";  
+		Child.lev=lev; 
+	};  
+	return Child;  
+}
+var x = Parent();  
+alert(x.name);  
+alert(x.lev()); 
+工厂模式用法：在函数中定义对象，设置对象的属性和方法，最后把这个对象return出去
+
 dom树和渲染树：
 渲染树(render tree)：
 从DOM树根节点开始，遍历每一个可见的节点
@@ -523,6 +565,10 @@ appendChild() //添加
 removeChild() //移除
 replaceChild() //替换
 insertBefore() //插入
+
+function中的隐藏属性arguments和arguments.callee的作用是什么
+arguments是个数组，里面的元素是function的参数，这个数组是个虚拟数组，不能用数组的原生方法
+arguments.callee就是这个function
 
 webpack相关：
 1.webpack是干什么的？
