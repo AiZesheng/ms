@@ -4,22 +4,27 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<style>
-		#div1 {
-			width: 100px;
-			height: 100px;
-			background: #f00;
-			visibility: hidden;
+		li {
+			height: 50px;
+			width: 100%;
+			background: yellow;
+			float: left;
+		}
+		ul:after {
+			content: '';
+			display: block;
+			clear: both;
 		}
 	</style>
 </head>
 <body>
-	<div id="div1"></div>
-	
-	<script>
-		function aa (a,b,c,d,e) {
-			console.log(arguments)
-		}
-		aa(1,2,3,4,5)
-	</script>
+	<ul>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+
 </body>
+
+
 </html>

@@ -249,6 +249,8 @@ angular指令的scope:
 
 
 angular 的数据绑定采用什么机制？脏检查机制
+脏检查原理：Angular在scope模型上设置了一个监听队列，用来监听数据变化而更新view。
+每有一个数据绑定到view上时Angular就会$watch里面插入一个$watch，用来监听数据变化。注意：不是说只要注册了一个数据就会插入$watch，而是将数据绑定到view上时才会插$watch
 
 angularjs 常见面试题 https://segmentfault.com/a/1190000005836443
 
@@ -302,6 +304,7 @@ readyState有五种状态：
 　　301——删除请求数据
 　　404——没有发现文件、查询或URl
 　　500——服务器产生内部错误
+301是永久转移 302是暂时转移
 
 实例： post提交数据
 var obj = new XMLHttpRequest();
@@ -600,6 +603,7 @@ js的数据类型：字符串、数字、布尔、数组、对象、Null、Undef
 defer和async的区别：
 defer和async都是异步加载script标签，但是执行时间不一样，async是加载完就执行，defer是加载完等html解析完(是解析完不是加载完)执行
 如果没有defer和async，script标签是同步加载，而且加载完了就执行
+defer只支持IE
 
 浏览器缓存相关：
 (1)什么时候会出现304?
@@ -638,6 +642,7 @@ hashchange 时，执行 history.transitionTo(...)
 2.减少对dom的操作：
 不要在for循环中取dom，取完dom元素之后保存在变量中
 3.js标签放到body标签结束之前
+4.将静态资源放在另一个域下
 
 一次完整的HTTP事务是怎样的一个过程？
 
@@ -736,6 +741,9 @@ BFC是什么？
 (3) display的值为table-cell、table-caption、inline-block中的任何一个
 (4) position的值不是relative和static
 
+e.target与e.currentTarget的区别
+e.target指的是触发事件的对象；
+e.currentTarget指的是注册了事件监听的对象；
 
 
 echarts3
@@ -746,6 +754,9 @@ vuejs
 设计模式
 
 面向对象与面向过程的区别
+
+cordova有什么用
+cordova提供了一组设备相关的API，通过这组API，移动应用能够以js访问原生的设备功能，如摄像头、麦克风等。
 
 http和https的区别：
 http是超文本传输协议，信息是明文传输
@@ -760,7 +771,8 @@ http和https使用的是完全不同的连接方式用的端口也不一样,前�
 网络协议是由哪三部分组成？
 语法、语义和时序三部分组成
 
-数据链路层的传送单位是什么？比特
+数据链路层的传送单位是什么？
+数据链路层是帧，物理层是比特，传输层是报文，网络层是包
 
 网络层可以向上提供两种服务分别是什么？
 虚电路服务和数据报服务
@@ -791,10 +803,14 @@ A类地址：1～126
 B类地址：128～191
 C类地址：192～223
 
-数据链路层的协议数据单元通常被称为什么？ 帧
-
 计算机网络通信的一个显著特点是什么？
 间歇性和突发性
+
+分组交换网把整个计算机网络划分为通信子网和资源两个子网
+
+网卡的功能主要包括数据封装、链路管理、编码译码
+
+
 
 
 
