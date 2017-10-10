@@ -1,0 +1,34 @@
+karma是测试过程管理工具
+jasmine是单元测试框架
+
+1.安装karma(如果电脑上没有全局安装过karma)   npm install -g karma
+2.项目里安装karma	npm install karma --save
+3.初始化karma    karma init		这里一直回车就行
+4.安装karma-jasmine		npm install karma-jasmine --save
+5.接下来写两个js文件，一个是被测试的文件(就是能够实现某种功能的js脚本)，一个是描述文件(用来测试那个脚本文件)，路径自已选。
+function reverse(name){   // 实现字符串逆置
+  return name.split("").reverse().join("");
+}
+describe("A suite of basic functions", function() {   // 这里用的是karma的语法
+  it("reverse word",function(){
+    expect("DCBA").toEqual(reverse("ABCD"));
+  });
+});
+6.修改karma.conf.js文件，这里面只修改files和exclude属性
+module.exports = function (config) {
+  config.set({
+    basePath: '',
+    frameworks: ['jasmine'],
+    files: ['*.js'],
+    exclude: ['karma.conf.js'],
+    reporters: ['progress'],
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    autoWatch: true,
+    browsers: ['Chrome'],
+    captureTimeout: 60000,
+    singleRun: false
+  });
+};
+7.启动karma   karma start karma.conf.js
