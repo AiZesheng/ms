@@ -93,8 +93,7 @@ mvvm与mvc有什么不同：
 跨域的3种方式：
 1.iframe，这种方式要求两个页面必须属于同一个基础域；
 2.通过script标签(通过jsonp)；
-3.通过后台代理的方式：
-当一个域向另一个域发送请求的时候，先将请求发送到本域的后台，本域的后台通过模拟http请求去访问其它域，再将返回的结果发送给前端；
+3.通过后台代理的方式
 
 slice和splice的区别
 1. splice的功能是用来删除数组中的一部分数据，slice是用来截取一部分数据
@@ -167,7 +166,7 @@ FastClick.attach(document.body);
 接下来就全部使用click事件就行了
 
 在同时使用vue.js和jquery时 给dom绑定事件时要这么写：
-$(document).on("click", "#id", function(){});
+$(document).on("click", "#id", function(){});	// 利用事件代理
 
 ng-if跟ng-show/hide的区别有哪些？
 1.ng-if="true"时 dom节点才会被创建 ng-if="false"相当于把dom给删了 ng-show="false" 相当于display: none Dom节点仍存在；
@@ -264,6 +263,12 @@ link写在head里目的就是为了先加载css再加载dom,如果先加载dom�
 
 jq的文档就绪函数与原生js的window.onload有什么区别？
 window.onload是等页面上所有的图片、视频、音频都加载完，$(function(){})是等dom结构加载完；当页面上图片很多的时候，window.onload就在js部分会有明显的延迟；
+
+jquery的文档就绪函数的原理是什么？
+利用了DOMContentLoaded事件
+document.addEventListener('DOMContentLoaded', () => {
+	// dosometing
+});
 
 jq的 attr与prop有什么区别？
 对于HTML元素本身就带有的固有属性，在处理时，使用prop方法。
