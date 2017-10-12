@@ -560,6 +560,31 @@ pro.then(data => {
 	alert(data);
 })
 
+es6新增的数据类型：Symbol
+Symbol的作用：它解决了我们在定义一个对象时，不小心把键改写或覆盖的问题。
+原始定义对象写法：
+var obj = {
+	name: 'Jone',
+	age: 19,
+	name: 'Jim'
+}
+console.log(obj.name)	// 这里输出Jim
+Symbol写法：
+var name = Symbol();
+var obj = {
+	[name]: 'Jone',
+	age: 19
+}
+console.log(obj[name])	// 这里输出Jone
+Symbol数据注意点：
+(1)Symbol数据类型不能转换为number类型，否则会报错
+(2)Symbol数据类型不能用new初始化，因为它本身是一个原始值，不是对象
+(3)Symbol数据类型不能和字符串拼接，否则会报错
+(4)Symbol数据类型可以转化为布尔类型
+(5) var a = Symbol('one')  var b = Symbol('one')   console.log(a == b) // 这里输出false
+(6) var a = Symbol.for('one')  var b = Symbol.for('one')  console.log(a === b) // true
+(7) var a = Symbol.for('one')  var b = Symbol('two')  console.log(Symbol.keyfor(a))	// one   console.log(Symbol.keyfor(b))  // undefined
+
 js如何删除一个dom元素？
 先取到那个元素的父级，然后用removeChild删除
 oDiv1.parentNode.removeChild(oDiv1)
