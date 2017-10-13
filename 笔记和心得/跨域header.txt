@@ -1,0 +1,2 @@
+header('Access-Control-Allow-Origin: *');
+如果用CI框架，就把这句话写在config/config.php文件里
