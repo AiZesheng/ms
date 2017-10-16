@@ -1,4 +1,4 @@
-karma是测试过程管理工具
+﻿karma是测试过程管理工具
 jasmine是单元测试框架
 
 1.安装karma(如果电脑上没有全局安装过karma)   npm install -g karma
@@ -9,7 +9,7 @@ jasmine是单元测试框架
 function reverse(name){   // 实现字符串逆置
   return name.split("").reverse().join("");
 }
-describe("A suite of basic functions", function() {   // 这里用的是karma的语法
+describe("A suite of basic functions", function() {   // 这里用的是jasmine的语法
   it("reverse word",function(){
     expect("DCBA").toEqual(reverse("ABCD"));
   });
