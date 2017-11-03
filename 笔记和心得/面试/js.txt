@@ -775,13 +775,10 @@ e.target与e.currentTarget的区别
 e.target指的是触发事件的对象；
 e.currentTarget指的是注册了事件监听的对象；
 
-
-echarts3
-ajax
-webpack
-gulp
-vuejs
-设计模式
+box-sizing有几种值？
+content-box  默认值 标准盒模型
+border-box  width = width + padding + border
+inherit  继承父原素的box-sizing
 
 面向对象与面向过程的区别
 
