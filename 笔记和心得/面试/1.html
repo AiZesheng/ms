@@ -4,29 +4,36 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 </head>
+<div id="div1"></div>
+<div id="div2"></div>
+<div id="div3"></div>
+
 <body>
 	<script>
-		function merge(left, right) {  
-			var result = [];  
-			while(left.length > 0 && right.length > 0) {  
-				if(left[0] < right[0]) {  
-					result.push(left.shift());  
-				}  
-				else {  
-					result.push(right.shift());  
-				}  
-			}  
-			/* 当左右数组长度不等.将比较完后剩下的数组项链接起来即可 */  
-			return result.concat(left).concat(right);  
-		}  
-		function mergeSort(arr){  
-			if(arr.length==1) {return arr};  
-			var mid=Math.floor(arr.length/2);  
-			var left_arr=arr.slice(0,mid),right_arr=arr.slice(mid);  
-			return merge(mergeSort(left_arr),mergeSort(right_arr));  
-		}  
-		var arr=[12,20,30,21,15,33,26,19,40,25];  
-		document.write(mergeSort(arr)); 
+		function sort (arr) {
+			var min = 0, t = 0, i = 0, j = 0;
+			for (i=0; i<arr.length-1; i++) {
+				min = i;
+				for (j=i+1; j<arr.length; j++) {
+					if (arr[min] > arr[j]) {
+						min = j;
+					}
+				}
+				if (min != i) {
+					t = arr[min];
+					arr[min] = arr[i];
+					arr[i] = t;
+				}
+			}
+			return arr;
+		}
+		// console.log(sort(arr))
+		function aa (a, b, c) {
+			console.log(arguments.callee)
+			console.log(arguments.caller)
+		}
+		aa()
+ 
 	</script>
 </body>
 </html>

@@ -1,11 +1,4 @@
-闭包：闭包就是能够读取其他函数内部变量的函数。“定义在一个函数内部的函数”。例如：
-var f1 = function(){
-	var num = 0;
-	var f2 = function(){
-		num++;
-	}();
-	alert(num);
-}();
+闭包：闭包其实就是个函数，这个函数能够访问其它函数内部的变量
 f2函数就是闭包
 闭包的两个好处：能够读取函数内部的变量；让这些变量的值始终保存在内存中；不会增加额外的全局变量；
 闭包实例：给多个div绑定事件
@@ -77,6 +70,7 @@ function fib(num){
 
 
 事件源：event.target(标准浏览器)  event.srcElement(ie)
+事件对象：var e = e || event;
 获取标签名：e.target.nodeName;
 
 事件捕获阶段：事件从最上一级标签开始往下查找，直到捕获到事件目标(target)。
@@ -594,9 +588,10 @@ removeChild() //移除
 replaceChild() //替换
 insertBefore() //插入
 
-function中的隐藏属性arguments和arguments.callee的作用是什么
+function中的隐藏属性arguments和arguments.callee以及arguments.caller的作用是什么
 arguments是个数组，里面的元素是function的参数，这个数组是个虚拟数组，不能用数组的原生方法
-arguments.callee就是这个function
+arguments.callee就是当前正在执行的函数，一般写递归的时候会用到
+arguments.caller是指当前正在执行的函数的调用者，标准浏览器并不适用
 
 webpack相关：
 1.webpack是干什么的？
@@ -805,7 +800,8 @@ map foreach for循环的区别？
 速度上 map > foreach > for
 map返回的是新数组，回调函数里如果不写return，返回的新数组的所有元素都是undefined
 
-
+async await
+用法：async写在function前面，await写在async函数内，await后面跟一个异步的函数
 
 
 
