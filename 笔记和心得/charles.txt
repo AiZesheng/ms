@@ -1,0 +1,4 @@
+如何用charles改写response数据(mock数据)
+1.右键想要改写的那个请求 -> Save Response 随便存个地方 
+2.然后打开这个文件把自己想要的数据写进去 
+3.还是右键这个请求 -> Map Local -> choose 然后把刚才改好的文件导入 就OK了

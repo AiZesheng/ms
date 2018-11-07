@@ -10,30 +10,24 @@
 
 <body>
 	<script>
-		function sort (arr) {
-			var min = 0, t = 0, i = 0, j = 0;
-			for (i=0; i<arr.length-1; i++) {
-				min = i;
-				for (j=i+1; j<arr.length; j++) {
-					if (arr[min] > arr[j]) {
-						min = j;
-					}
+		var arr = [{
+			name: '张三',
+			age: 19
+		}, {
+			name: '李四',
+			age: 20
+		}];
+		function replace (arr, arrObj, obj) {
+			var num = 0;
+			arr.map(function (item, index) {
+				if (arrObj.name == item.name) {
+					num = index;
 				}
-				if (min != i) {
-					t = arr[min];
-					arr[min] = arr[i];
-					arr[i] = t;
-				}
-			}
-			return arr;
+			});
+			arr.splice(num, 1, obj);
 		}
-		// console.log(sort(arr))
-		function aa (a, b, c) {
-			console.log(arguments.callee)
-			console.log(arguments.caller)
-		}
-		aa()
- 
+		replace(arr, {name: '张三', age: 20}, {name: '王五', age: 78})
+		console.log(arr);
 	</script>
 </body>
 </html>

@@ -767,7 +767,7 @@ e.currentTarget指的是注册了事件监听的对象；
 
 box-sizing有几种值？
 content-box  默认值 标准盒模型
-border-box  width = width + padding + border
+border-box  width = ContentWidth + padding + border
 inherit  继承父原素的box-sizing
 
 面向对象与面向过程的区别

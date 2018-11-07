@@ -1,38 +1,61 @@
-jquery中判断两个DOM元素是否相等：if( $(a).is( $(b) ) == true )
-
-js跳转页面 window.location = "地址";
-
-for(var i=0;i<opLi.length;i++){
-	opLi[i].onclick=function(){
-		this.style.background="yellow";
-		opImg[0].src=imgArry[i];
-	}
+1. js数组删除一个元素 
+(1) 该数组元素不是对象
+function remove (arr, val) {
+	var index = arr.indexOf(val);
+	arr.splice(index, 1);
 }
-
-/*
-	以上代码错误
-	for循环下面出现函数,那么函数中的i就不好使了
-	正确的写法是事先定义一个自定义属性num与i同步
-*/
-
-for(var i=0;i<opLi.length;i++){
-	opLi[i].num=i;
-	opLi[i].onclick=function(){
-		this.style.background="yellow";
-		opImg[0].src=imgArry[this.num];
-	}
+(2) 该数组元素是对象
+var arr = [{
+	name: '张三',
+	age: 19
+}, {
+	name: '李四',
+	age: 20
+}, {
+	name: '王五',
+	age: 21
+}];
+function remove (arr, obj) {
+	var rs = [];
+	arr.map(function (item) {
+		if (obj.name != item.name) {
+			rs.push(item);
+		}
+	});
+	return rs;
 }
+console.log(remove(arr, {name: '张三'}));
 
-// 获取元素属性
-function getStyle(obj,attr){
-	return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+2. js数组替换一个元素
+(1) 该数组元素不是对象
+var arr = [1,2,3,4,5];
+function replace (arr, arrVal, val) {
+	var index = arr.indexOf(arrVal);
+	arr.splice(index, 1, val);
 }
-
-判断数组中是否存在某个元素
-if(arr.indexOf(a) > -1){
-	console.log("已存在");
-}else{
-	console.log("没有");
+replace(arr, 2, 1);
+console.log(arr);
+(2) 该数组元素是对象
+var arr = [{
+	name: '张三',
+	age: 19
+}, {
+	name: '李四',
+	age: 20
+}];
+function replace (arr, arrObj, obj) {
+	var num = 0;
+	arr.map(function (item, index) {
+		if (arrObj.name == item.name) {
+			num = index;
+		}
+	});
+	arr.splice(num, 1, obj);
 }
+replace(arr, {name: '张三', age: 20}, {name: '王五', age: 78});
+console.log(arr);
 
-判断checkbox是否被选中：var bClick = $("#remember").is(":checked");
+
+
+
+
