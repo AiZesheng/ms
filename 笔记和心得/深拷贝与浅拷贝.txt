@@ -1,0 +1,21 @@
+var arr = [{name: 'aa'}, {name: 'bb'}]
+var arr2 = JSON.parse(JSON.stringify(arr)) // 深拷贝
+
+也可以使用lodash里的cloneDeep进行深拷贝
+import cloneDeep from 'lodash/cloneDeep'
+let arr2 = cloneDeep(nextProps.directArr)
+
+引用数据类型--名存在栈内存中，值存在于堆内存中，但是栈内存会提供一个引用的地址指向堆内存中的值
+
+浅拷贝的方法非常多
+1.可以使用es6的 ... 运算符
+// 对象浅拷贝
+var obj = {name: 'cc'}
+var obj2 = {...obj}
+// 数组浅拷贝
+var arr = [1,2,3]
+var arr2 = [...arr]
+
+如果数组里面还有引用 如 arr = [{name: 'aa'}, {name: 'bb'}] 浅拷贝的缺点就会体现出来
+
+2.浅拷贝数组可以使用 arr.slice()
