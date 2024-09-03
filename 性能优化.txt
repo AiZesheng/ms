@@ -1,0 +1,68 @@
+绝对重点
+
+1、遇到了什么性能问题
+
+2、围绕什么指标进行了什么优化
+
+3、取得了什么成果
+
+首屏加载时间过长(First Contentful Paint) 约1点多秒  使用ssr优化，优化完约0.4秒
+针对广告详情页的Cumulative Layout Shift指标 使用骨架屏进行优化
+通过chrome-dev-tools查看各个包资源发现有些包体积校大，下载较慢 阻塞网面渲染 使用webpack-bundle-analyzer查看各个包体积
+
+4、前端性能预警平台需要对哪些内容做预警
+白屏时间，首屏时间，页面卡顿，报错监控
+
+5、性能采集工具：Lighthouse
+
+6、为什么要把静态资源上传到cdn
+因为浏览器对于同个域名下的资源请求有数量限制，一般是6个，超过6个的会等前面的资源请求完再去请求
+
+7、为什么尽量使用web语义化标签
+当html标签不满足web语义化时，浏览器就需要更多的时间去解析dom标签的含义
+
+8、如果采集首屏时间
+(1)、如果是非SPA项目，使用DOMContentLoaded来采集
+(2)、如果是SPA项目，使用MutationObserver监控dom变化，变化幅度最大的一次时间就是首屏渲染时间
+
+9、SPA项目为什么不能用PerformenceApi来采集首屏时间
+因为SPA项目是先出现一个空的div标签，然后用js来渲染这个div标签里的内容，在这个空的div标签出现的时候就已经DOMContentLoaded了
+
+10、如果采集白屏时间
+就是页面开始展示的时间点 - 开始请求的时间点
+使用PerformenceApi来采集(如果浏览器支持Performence)
+FP = Date.now() - performence.timing.navigationStart
+如果浏览器不支持 可以在head标签里的script里给个window.start = Date.now()
+在body标签上面写个script就可以取到了 FP = Date.now() - window.start
+
+11、如何采集页面卡顿时间
+(1)、如果是移动端，客户端那边可以直接拿到单帧渲染时间，一般连续5帧超过50ms，判定为卡顿。单顿渲染超过250ms判定为严重卡顿。
+(2)、如果是web端可以通过Long Tasks API方案获取duration 或者用requestAnimationFrame来获取每秒的fps值，如果出现连续3秒fps低于20可以判定为卡顿
+Long Tasks API 方案
+var observer = new PerformanceObserver(function (list) {
+  var perfEntries = list.getEntries();
+  for (const entry of perfEntries) {
+    // 分析和上报关键卡顿信息
+    if (entry.duration > 100) {
+    	console.log('页面卡顿超过100ms')
+    }
+  }
+});
+// 注册长任务的观察
+observer.observe({ entryTypes: ["longtask"] });
+
+12、如何做错误上报
+(1)、对于一般的js报错以及监听资源错误用window.onerror，回调函数里如果有e.target.src || e.target.href 表示资源错误，否则是普通js报错
+(2)、对于promise异常可以用window.addEventListener('unhandledrejection')事件
+(3)、对于接口报错比较简单，在公共的post方法的catch里监控
+
+
+
+其它：
+1、开发体验优化？
+
+
+
+
+
+

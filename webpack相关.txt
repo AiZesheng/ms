@@ -1,0 +1,125 @@
+1、如果实现webpack plugin
+// myPlugin.js
+class MyPlugin {
+  apply(compiler) {
+    // 注册一个在编译器启动时执行的钩子
+    compiler.hooks.run.tap('MyPlugin', (params) => {
+      console.log('编译器开始运行！');
+    });
+  }
+}
+ 
+module.exports = MyPlugin;
+
+// 在webpack.config.js调用plugins
+const MyPlugin = require('./path/to/MyPlugin');
+ 
+module.exports = {
+  // ...
+  plugins: [
+    new MyPlugin()
+  ]
+};
+
+总结：一个webpack插件是一个类，需要实现里面的apply方法，apply方法的参数里有个compiler，compiler.options可以获取到当前webpack的主环境配置，包括loaders、plugins、entry、output等，
+compiler.hooks可以注册tapable的不同种类hook，从而可以在compiler生命周期中植入不同逻辑
+
+
+compiler.hooks常用的钩子：
+
+entryOption: 在配置的 entry 选项被解析之后，在 sort 插件插入依赖之前
+
+afterPlugins: 在所有插件初始化之后
+
+afterResolvers: 在所有解析器初始化之后
+
+environment: 在环境被创建之后
+
+afterEnvironment: 在环境被创建之后
+
+entryOption: 在配置的 entry 选项被解析之后
+
+afterPlugins: 在所有插件初始化之后
+
+afterResolvers: 在所有解析器初始化之后
+
+environment: 在环境被创建之后
+
+afterEnvironment: 在环境被创建之后
+
+beforeRun: 在编译开始之前
+
+run: 在编译开始之前
+
+watchRun: 在开始一个新的编译/监听模式下的编译
+
+normalModuleFactory: 在创建一个新的 NormalModuleFactory 时
+
+contextModuleFactory: 在创建一个新的 ContextModuleFactory 时
+
+beforeCompile: 在编译准备阶段，在生成文件系统之前
+
+compile: 在编译准备阶段，在生成文件系统之后
+
+make: 在创建一个新的 Compilation 对象时
+
+afterCompile: 在编译实例创建好之后
+
+shouldEmit: 在决定是否发出文件到输出目录之前
+
+emit: 在输出资源被写入到输出目录之前
+
+afterEmit: 在输出资源被写入到输出目录之后
+
+done: 编译完成
+
+2、如何实现webpack loader
+Loader是一个函数，接受文件源内容作为参数，并返回转换后的结果
+// replace-console.js
+module.exports = function(content) {
+  // 假设我们要替换所有的 "foo" 为 "bar"
+  const replacedContent = content.replace(/foo/g, 'bar');
+  // 将转换后的内容返回给webpack
+  return replacedContent;
+};
+
+// webpack.config.js中调用loader
+module.exports = {
+  // ...
+  module: {
+    rules: [
+      {
+        test: /\.js$/, // 匹配所有.js文件
+        use: './loaders/replace-loader', // 使用我们创建的loader
+      }
+    ]
+  }
+};
+
+
+css-loader 和 style-loader的区别
+css-loader是解析css文件，如@import这种语法，并可以将css文件合并
+style-loader是往head标签里插入style标签
+执行顺序，先执行css-loader再执行style-loader 所以再webpack配置里要将css-loader放后面，style-loader放前面
+
+3、webpack loader和plugin哪个先执行
+在webpack中，plugin先于loader执行。Webpack的运行周期中，plugin在整个项目的编译时期运行，而loader则是在项目打包之前运行。
+
+4、loader和plugin的作用
+Loader在webpack中的作用是将非JavaScript文件转换为webpack可以处理的格式，例如，将CSS文件转换为JavaScript模块(css-loader)，或将TypeScript文件转换为JavaScript文件(ts-loader/babel-loader)。
+Plugin则通过监听webpack运行周期中的事件来扩展webpack的功能。Plugin可以在特定的阶段执行任务，例如优化代码、生成HTML文件等
+
+5、常见的loader及plugin
+loader: ts-loader/babel-loader/css-loader/style-loader/file-loader
+plugin: html-webpack-plugin(生成html文件)/terser-webpack-plugin(压缩js文件)/DllPlugin
+
+6、webpack的构建流程
+(1)、开始编译：注册所有的webpack plugin，监听webpack构建生命周期的事件结点，执行对象run方法开始执行编译
+(2)、确定入口：从entry开始递归遍历entry所需的所有的module
+(3)、执行loader：根据不同类型的文件匹配对应的loader，通过loader对文件进行转换，
+(4)、生成chunk：递归完后得到每个文件的结果，根据entry配置生成代码块chunk
+
+
+
+
+

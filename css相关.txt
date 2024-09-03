@@ -1,0 +1,10 @@
+1、什么是BFC?
+Block Formatting Context，块级格式化上下文，独立的布局环境，具有BFC特性的元素可以看作是独立的容器，容器内的元素不会影响到容器外的元素
+2、如何触发BFC?
+(1) float的值不为none
+(2) overflow的值不为visible
+(3) display的值为table-cell、table-caption、inline-block中的任何一个
+(4) position的值不是relative和static
+3、BFC的作用是什么?
+解决外边距的塌陷问题(垂直塌陷)
+解决包含塌陷

@@ -1,0 +1,132 @@
+1、qiankun的运行原理 总共分4部
+export const start = async () => {
+  // 1、监听路由变化
+  // 如果是hash路由 用window.onhashchange监听
+  // 如果是history路由 
+  // history.go、back、forward，用window.onpopstate监听
+    window.addEventListener('popstate', () => { console.log('监听到路由变化了') }) 
+  // history.pushState、replaceState 需要通过函数重写的方式进行劫持
+  const rawPushState = window.history.pushState
+  window.history.pushState = (...args) => {
+    rawPushState.apply(window.history, args)
+    console.log('监听到路由变化了')
+  }
+  const rawReplaceState = window.history.replaceState
+  window.history.replaceState = (...args) => {
+    rawReplaceState.apply(window.history, args)
+    console.log('监听到路由变化了')
+  }
+
+  // 2、根据路由匹配子应用
+  const apps = getApps()
+  const app = apps.find(item => window.location.pathname.startWith(item.activeRule))
+
+  // 3、加载子应用
+  window.__POWERED_BY_QIANKUN__ = true
+  // 请求子应用的html、css、js
+  const html = await fetch(app.entry).then(res => res.text())
+  const container = document.querySelector(app.container)
+  // 注意 这里浏览器出于安全考虑，innerHTML中的script不会加载执行 
+  // container.innerHTML = html
+  // qiankun这里实际上用的是import-html-entry这个库来解析html的，然后拿到该html里所有的script文本，用eval执行
+
+  // 如何获取到html文本里所有的script标签?
+  const template = document.createElement('div')
+  template.innerHTML = html
+
+  container.appendChild(template)
+
+  const scripts = template.querySelectorAll('script')
+
+  // 执行子应用所有的js脚本
+  const scripts = await getExternalScripts(html)
+  scripts.forEach(item => {
+    eval(item)
+  })
+
+  // 为什么子应用需要导出umd格式
+  // 因为需要把bootstrap、mount、unmount等生命周期函数挂到window[subapp-name]上
+
+  // 如何获取到挂到window[subapp-name]上的生命周期函数
+  // 手动构造一个CommonJS模块
+  const module = { exports: {} }
+  const exports = module.exports
+    scripts.forEach(item => {
+    eval(item)
+  })
+  return module.exports
+
+  // 4、渲染子应用
+  async mount(app) {
+    await app.mount({
+      container: document.querySelector(app.container)
+    })
+  }
+}
+
+2、qiankun是如何隔离主应用和子应样式冲突的
+两种方式
+start({
+  // 1、通过shadow dom
+  strictStyleIsolation: true,
+  // 2、通过添加选择器范围来解决
+  experimentalStyleIsolation: true
+})
+
+通过添加选择器范围来解决最后输出的css就是这样的
+div[data-qiankun="app-vue2"] {
+  ...
+}
+
+3、应用如何注册
+通过registerMicroApps
+
+4、应用之间如何通信
+通过actions通信 initGlobalState
+主应用：
+import { initGlobalState, MicroAppStateActions } from 'qiankun';
+
+// 初始化 state
+const actions: MicroAppStateActions = initGlobalState(state);
+
+actions.onGlobalStateChange((state, prev) => {
+  // state: 变更后的状态; prev 变更前的状态
+  console.log(state, prev);
+});
+actions.setGlobalState(state);
+actions.offGlobalStateChange();
+
+微应用：
+// 从生命周期 mount 中获取通信方法，使用方式和 master 一致
+export function mount(props) {
+  props.onGlobalStateChange((state, prev) => {
+    // state: 变更后的状态; prev 变更前的状态
+    console.log(state, prev);
+  });
+
+  props.setGlobalState(state);
+}
+
+5、如何部署 部署时需要注意哪些事情
+(1)、微应用webpack 构建时的 publicPath 为目录名称
+(2)、history 路由的微应用需要设置 base ，值为目录名称，用于独立访问时使用。
+(3)、activeRule 不能和微应用的真实访问路径一样，否则在主应用页面刷新会直接变成微应用页面。
+(4)、微应用的真实访问路径就是微应用的 entry，entry 可以为相对路径。
+(5)、微应用的 entry 路径最后面的 / 不可省略，否则 publicPath 会设置错误，例如子项的访问路径是 http://localhost:8080/app1,那么 entry 就是 http://localhost:8080/app1/。
+
+6、微前端各个框架的对比
+(1)、single-sap：它可以将多个单页应用集成为一个整体，但不支持Js沙箱和样式隔离，容易出现冲突。
+(2)、micro-app(京东)：是一个基于Web Components的微服务框架，支持多种前端框架，提供了丰富的功能和低接入成本，但功能丰富也带来了较多的配置和API。静态资源补全问题需要手动解决。
+(3)、qiankun：是基于single-spa的微前端实现库，提供了更高的灵活性和代码库隔离性，但适配成本较高，且存在一些限制。
+(4)、wujie(腾讯)：js放在iframe里执行，dom放在webCompoent渲染。优点是接入成本低，缺点是内存开销大，iframe到webComponent代理机制复杂，导致市面上主流的富文本编辑器无法在wujie中运行
+
+7、我在实践当中用过的微前端方案
+(1)、iframe 比较早期了，当时也是项目着急上线，所有的弹窗、popover、tooltip都有问题，还有通信
+(2)、拆多个子项目，头和侧边栏用npm包的方式发布成组件
+(3)、webpack5模块联邦，上线了一个子应用，但是没多久就更改方案了，因为这样要求子应用必须用webpack，而且当时遇到了样式冲突等问题
+(4)、qiankun
+
+
+
+
+

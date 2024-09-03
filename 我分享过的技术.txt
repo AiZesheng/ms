@@ -1,0 +1,6 @@
+前端性能优化: 如果采集白屏、卡顿、首屏时间、渲染优化、打包优化、报错监控
+swr: 用于优化网络请求的React Hooks库
+nest.js: node.js框架
+代码规范: 函数式编程(声明式、柯里化、函数组合)、react代码规范(hooks使用规范、jsx规范)
+抓包工具charles和whistle: 移动端抓包、mock数据、处理本地跨域
+

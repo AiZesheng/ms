@@ -1,0 +1,80 @@
+1、说一说JS数据类型有哪些,区别是什么？
+Number、String、Boolean、Symbol、Null、Undefined、Object
+其中Object是引用数据类型，其它的是基本数据类型
+基本数据类型存储在栈中，占用内存小，属于频繁被使用的数据
+引用数据类型存储于堆内存中，占用空间较大。引用数据类型在栈中存储了指针，该指针指向了堆中该实体的起始地址
+
+2、es6的Set
+(1)、Set是一种有序的唯一的集合，它的值可以是任何类型
+(2)、Set的值是不重复的，重复的值将被去重
+(3)、Set的属性及方法
+size、add()、delete()、has()、clear()、keys()、values()、forEach()
+
+
+
+3、es6的Map
+(1)、Map是用来存储键值对的集合，其中键的类型可以是任意类型，而普通对象的key只能是字符串或者是symbol
+(2)、Map属性及方法
+set(key, value)、get(key)、delete(key)、has(key)、clear()、size
+(3)、React内部通过Map来存储组件的props
+const componentProps = new Map()
+const setComponentProps = (component, props) => {
+	componentProps.set(component, props)
+}
+const getComponentProps = (component) => {
+	return componentProps.get(component)
+}
+
+4、es6的WeakSet
+(1)、WeakSet的成员只能是对象，不能是其它类型的值
+(2)、WeakSet中的对象都是弱引用，如果其它对象都不再引用该对象，那么垃圾回收机制会回收该对象
+(3)、WeakSet不可遍历，没有size属性，因为WeakSet有多少个成员取决于拉圾回收机制有没有执行
+
+5、WeakMap
+(1)、WeakMap与Map的结构类似，但是WeakMap的key只能是对象
+(2)、WeakMap的key都是弱引用，一旦key被回收，该键值对会自动消失，不需要手动执行delete
+
+6、谈谈垃圾回收机制方式及内存管理
+垃圾回收机制—GC
+原理：垃圾收集器会定期（周期性）找出那些不在继续使用的变量，然后释放其内存。
+不再使用的变量也就是生命周期结束的变量，当然只可能是局部变量，全局变量的生命周期直至浏览器关掉页面才会结束。
+GC方案：
+（1）遍历所有可访问的对象。
+（2）回收已不可访问的对象。
+GC的缺陷：GC时，停止响应其他操作
+GC优化策略：
+(1)分代回收：目的是通过区分“临时”与“持久”对象。多回收“临时对象”区（young generation），少回收“持久对象”区（tenured generation），减少每次需遍历的对象，从而减少每次GC的耗时。
+(2)增量GC：就是“每次处理一点，下次再处理一点，如此类推。
+
+7、let和var的区别
+(1)、var有变量提升，let没有
+(2)、let不允许在相同作用域下重复声明，var可以
+(3)、let创建的全局变量不会加到window上
+(4)、let会产生块级作用域，var不会
+
+8、js的事件循环 event loop
+（1）所有同步任务都在主线程上执行，形成一个执行栈（execution context stack）。
+（2）主线程之外，还存在一个"任务队列"（task queue）。只要异步任务有了运行结果，就在"任务队列"之中放置一个事件。
+（3）一旦"执行栈"中的所有同步任务执行完毕，系统就会读取"任务队列"，看看里面有哪些事件。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。
+（4）主线程不断重复上面的第三步。
+主线程从任务队列中读取事件,这个过程是不断循环的,所以整个的运行机制称为event loop
+
+9、什么是宏任务与微任务
+宏任务和微任务都是异步任务
+宏任务包括：
+(1)、定时器任务： 如setTimeout、setInterval
+(2)、用户交互任务：例如点击事件、输入事件等与用户交互的相关任务
+(3)、I/O任务：例如网络请求、文件读写等需要进行I/O操作的任务
+(4)、渲染任务：当浏览器需要重绘或重新布局时触发的任务
+(5)、请求动画帧任务：通过requestAnimationFrame()方法设置的任务，用于在每一帧进行绘画或动画操作
+这些任务都是比较耗时的操作，在事件循环中被视为宏任务，需要等待一定时间或特定的触发条件才会执行
+微任务包括：
+(1)、Promise回调：Promise对象的resolve或reject方法的回调函数
+(2)、MutationObserver回调：当DOM发生变化时触发的回调函数
+(3)、process.nextTick在nodeJS环境中将回调函数放入微任务队列
+
+由于微任务是相对较小的任务，所以微任务的优先级高于宏任务(promise.then优先于setTimeout执行)
+
+
+
+

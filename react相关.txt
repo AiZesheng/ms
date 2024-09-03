@@ -1,0 +1,101 @@
+1、为什么react hooks不能写在条件语句或者循环语句里
+因为react需要保证每次render时，hooks的执行顺序是一致的。如果写在条件语句里，其执行顺序可能会发生变化。
+react存hook对象用的是链表结构，fiber.memoizedState(hook0)->fiber.memoizedState(hook1)->fiber.memoizedState(hook2)，这样hooks的执行顺序就非常重要，不论是用数组存还是用链表存，都要保证hook的执行顺序不能变
+
+2、react setState原理
+setState本质是通过一个队列机制实现state更新的。 执行setState时，会将需要更新的state合并后放入状态队列，而不会立刻更新state，
+队列机制可以批量更新state
+
+3、函数组件与类组件的区别
+function component 无状态组件     除非使用hooks
+function component 不具有生命周期  除非使用hooks
+function component 没有ref   除非使用forwardRef
+
+3、React PureComponent作用
+React.PureComponent 通过props和state的浅对比来实现 shouldComponentUpate()
+PureComponent缺点
+因为PureComponent是浅比较，可能会因深层的数据不一致而产生错误的否定判断，从而shouldComponentUpdate结果返回false，界面得不到更新。
+PureComponent优势
+不需要开发者自己实现shouldComponentUpdate，就可以进行简单的判断来提升性能。
+
+4、React.memo作用
+与React.PureComponent类似
+React.memo第二个参数相当于class组件的shouldComponentUpdate
+
+5、何时避免React.memo以及何时使用React.memo
+遵循以下经验法则：如果无法量化性能提升，请不要使用React.memo
+
+6、react的事件机制 以及合成事件的好处
+react中的所有事件都是合成事件 通过事件代理的方式 通过document来触发
+合成事件的好处有3个：
+(1)、react帮我们解决了浏览器兼容性问题
+(2)、统一事件管理，提高性能
+(3)、react内部可以监听到合成事件，方便进行一些操作
+
+7、为什么要 import React from 'react'
+因为只要出现了jsx 就相当于调用了React.createElement
+
+8、React 中 keys 的作用是什么？
+在React Diff 算法中 React 会借助元素的 Key 值来判断该元素是新近创建的还是被移动而来的元素，从而减少不必要的元素重渲染
+一旦组件加上了key值，react就会在渲染时对该组件的身份进行校验，首先校验新旧组件的key值是不是一致，
+不一致的话，该组件直接销毁，然后在新建该组件；如果一致，则比较组件的属性是否发生变化，如果发生变化，
+则采用diff算法进行对比，然后得出差异对象，如果属性没发生变化，则认为该组件不需要改变
+
+为什么最好不要使用index作为key？什么场景下可以使用index？
+若数组的内容只是作为纯展示，而不涉及到数组的动态变更，其实是可以使用index作为key的。
+如果涉及到数组的动态变更，例如数组新增元素、删除元素或者重新排序等，这时index作为key会导致展示错误的数据。
+
+9、函数组件如何实现forceUpdate?
+const [,forceUpdate] = useReducer((x) => x + 1, 0)
+
+10、什么是React Fiber
+(1)、概念：旧版的 React 它会在一次更新中同步地遍历整个组件树，而 Fiber 则采用了一种增量式的更新方式，使得渲染过程可以被中断和恢复，从而提升性能和响应速度
+(2)、运行原理：在 Fiber 架构中，每个组件对应一个 Fiber 节点。每个Fiber节点上的属性就表示这个组件的特性，比如memoizedState、memoizedProps、child、sibling等。这些 Fiber 节点构成了一个链表结构，通过这种结构，React 可以灵活地遍历和操作组件树。React Fiber 的调度器负责管理任务的优先级和执行顺序。协调器则负责遍历组件树，比较新旧状态并生成需要更新的部分。通过这种方式，React 可以高效地更新 UI，而不会造成卡顿。
+
+11、react18新特性
+(1)、Suspense支持服务端渲染
+import { Suspense, lazy } from 'react';
+ 
+// 动态导入组件
+const LazyComponent = lazy(() => import('./LazyComponent'));
+ 
+function App() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LazyComponent />
+    </Suspense>
+  );
+}
+(2)、新增了ErrorBoundary组件
+import { ErrorBoundary } from 'react-error-boundary';
+ 
+function App() {
+  return (
+    <ErrorBoundary fallback={<div>Error occurred</div>}>
+      <ComponentThatMayFail />
+    </ErrorBoundary>
+  );
+}
+(3)、flushSync 强制更新dom
+(4)、renderToStringAsync 允许开发者异步地渲染组件并输出 HTML
+(5)、useTransition 过度更新
+(6)、createRoot 允许将不同的组件渲染到同一个根节点
+
+12、react-router v6新特性
+(1)、<Switch>重命名为<Routes>
+(2)、用useNavigate代替useHistory
+(3)、<Route>组件支持嵌套
+(4)、大小减少：从20kb到8kb
+(5)、useRoutes代替react-router-config配置
+
+13、dom diff的原理
+(1)、首先遍历旧的虚拟dom树和新的虚拟dom树，将它们的每个节点进行比较
+(2)、如果节点类型不同，直接替换旧的节点
+(3)、如果节点类型相同，则比较节点属性是否有变化，如果有变化则更新节点属性
+(4)、如果节点有新的子节点，则递归执行前面三步
+(5)、如果旧的dom树比新的dom树多出节点，则删除多余子节点
+(6)、如果新的dom树比旧的dom树多出节点，则直接添加新的节点
+
+
+
+
