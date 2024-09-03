@@ -1,6 +1,6 @@
 1、为什么react hooks不能写在条件语句或者循环语句里
 因为react需要保证每次render时，hooks的执行顺序是一致的。如果写在条件语句里，其执行顺序可能会发生变化。
-react存hook对象用的是链表结构，fiber.memoizedState(hook0)->fiber.memoizedState(hook1)->fiber.memoizedState(hook2)，这样hooks的执行顺序就非常重要，不论是用数组存还是用链表存，都要保证hook的执行顺序不能变
+react存hook对象用的是链表结构，fiber.memorizedState(hook0)->fiber.memorizedState(hook1)->fiber.memorizedState(hook2)，这样hooks的执行顺序就非常重要，不论是用数组存还是用链表存，都要保证hook的执行顺序不能变
 
 2、react setState原理
 setState本质是通过一个队列机制实现state更新的。 执行setState时，会将需要更新的state合并后放入状态队列，而不会立刻更新state，
