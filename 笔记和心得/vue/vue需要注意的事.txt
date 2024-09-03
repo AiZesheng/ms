@@ -1,8 +1,0 @@
-在给img绑定属性时要用v-bind，并且不能写{{}}
-准确写法：<img :src=x.book_img alt="">
-methods不要写成methods(){}，methods冒号后面是对象
-methods: {
-	aa(){
-		alert(123);
-	}
-}

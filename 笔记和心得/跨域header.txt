@@ -1,4 +1,0 @@
-header('Access-Control-Allow-Origin: *');
-header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-header('Access-Control-Allow-Methods: GET, POST, PUT,DELETE');
-如果用CI框架，就把这句话写在config/config.php文件里

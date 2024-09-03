@@ -1,3 +1,0 @@
-如果看到一个组件上写了keep-alive
-意思就是这个组件渲染了一次之后被保存在内存中，下次切到这个组件时，该组件不会重新渲染
-例如：<component :is='curremtView' keep-alive></component>
