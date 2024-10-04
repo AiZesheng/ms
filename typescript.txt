@@ -1,0 +1,53 @@
+1、react中如何获取组件的某个props类型
+使用React.ComponentProps  type p = ComponentProps<typeof Select>['onChange']
+
+2、TypeScript 中的any、unknown、never类型有何不同？
+(1)、unknown是描述不确定的类型，与any很像，但any会跳过类型检查而unknown不会。
+let a: unknown;
+let b:number = a; // 报错，不能把unknown赋值给其它类型，但是可以把any赋值给其它类型
+unknown 除了与 any 以外, 与其它任何类型组成的联合类型最后都是 unknown 类型
+unknown 与其它任何类型组成的交叉类型最后都是其它类型
+(2)、never表示永远不存在类型
+never是所有类型的子类型，是ts的底层类型
+以下两种情况会出现never
+function foo() { throw new Error('Not Implemented') } // 一个总是会抛出错误的函数
+function bar() { while(true) {} } // 一个死循环函数
+(3)、any表示任意类型，会跳过类型检查
+
+3、typescript内置的泛型
+(1)、Partial 把对象的所有属性都加上问号
+type Partial<T> = {
+    [P in keyof T]?: T[P];
+};
+(2)、Required 跟Patial相反，把对象所有属性都变成必填的
+type Required<T> = {
+    [P in keyof T]-?: T[P];
+};
+(3)、Readonly 只读的 把对象所有属性都变成只读(不能修改属性)
+type Readonly<T> = {
+    readonly [P in keyof T]: T[P];
+};
+(4)、Pick 选择对象的某些属性
+type Pick<T, K extends keyof T> = {
+    [P in K]: T[P];
+};
+(5)、Omit 排除掉对象的某些属性
+(6)、Record 用来描述一个对象
+type Record<K extends keyof any, T> = {
+    [P in K]: T;
+};
+(7)、Exclude 针对联合类型，排除掉相同的，取不同的
+export type PersonAttr = 'name' | 'age'
+export type StudentAttr = 'name' | 'age' | 'class' | 'school'
+const student1: Exclude<StudentAttr, PersonAttr> // student1就只能被赋值为'class' 或者'school'
+(8)、Extract 与Exclude相反，针对联合类型，排除不同的的，取出相同的
+export type PersonAttr = 'name' | 'age'
+export type StudentAttr = 'name' | 'age' | 'class' | 'school'
+const student1: Extract<StudentAttr, PersonAttr> student1就只能被赋值为'name'或者'age'
+(9)、ReturnType 获取函数的返回类型
+
+
+
+
+
+

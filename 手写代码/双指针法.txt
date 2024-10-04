@@ -1,0 +1,52 @@
+最长子序列相关问题都可以使用双指针法
+
+// 判断子序列
+// 字符串的一个子序列是原始字符串删除一些（也可以不删除）字符而不改变剩余字符相对位置形成的新字符串。
+// （例如，"ace"是"abcde"的一个子序列，而"aec"不是）。
+// 示例 1：
+// 输入：s = "abc", t = "ahbgdc"
+// 输出：true
+// 示例 2：
+// 输入：s = "axc", t = "ahbgdc"
+// 输出：false
+// var isSubsequence = function(s, t) {
+//   let i = 0
+//   let j = 0
+//   while (i < s.length && j < t.length) {
+//     if (s[i] === t[j]) {
+//       i++
+//     }
+//     j++
+//   }
+//   return i === s.length
+// };
+// isSubsequence('aaaaa', 'baaaa')
+
+求最长递增子序列
+var longestConsecutive = function(nums) {
+  if (!nums.length) {
+    return 0
+  }
+  let newList = Array.from(new Set(nums))
+  newList = newList.sort((a, b) => a - b)
+  let i=0 
+  let j=i+1
+  let long = 1
+  while(i < newList.length && j < newList.length) {
+    if (newList[j] === newList[j-1] + 1) {
+      const newLong = j - i + 1
+      long = Math.max(long, newLong) 
+      j++
+    } else {
+      i = i + 1
+      j = i + 1
+    }
+  }
+  return long
+};
+
+longestConsecutive([-7,-1,3,-9,-4,7,-3,2,4,9,4,-9,8,-7,5,-1,-7])
+
+
+
+

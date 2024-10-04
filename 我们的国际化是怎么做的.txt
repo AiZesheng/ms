@@ -6,3 +6,32 @@
 页面打开时会调用语言配置接口，如果能拿到，则写入localStorage里面一份，同时页面上展示的语言取的是接口拿到的
 如果页面打开时接口没拿到，则取localStorage，如果localStorage里取不到则拿代码里面的
 
+RTL方案
+获取到当前语言，如果是阿拉伯语言 html 标签增加 dir="rtl" 这个相当于css的direction: rtl
+然后webpack配置增加 postcss-rtlcss配置项
+import { postcssRTLCSS } from 'postcss-rtlcss'
+{
+	loader: 'postcss-loader',
+	options: {
+		postcssOptions: {
+			plugins: [
+				postcssRTLCSS(options)
+			]
+		}
+	}
+}
+
+为什么要用到postcss-rtlcss，只用direction: rtl不够吗
+direction: rtl对于添加了text-align以及定位、浮动的元素无效
+
+postcss-rtlcss基于rtlcss 打包输出的css多了对原本margin-left 改成 margin-right的代码
+.test1 {
+	margin-left: 10px;
+	padding-left: 10px;
+}
+
+[dir=rtl] .test1 {
+	margin-right: 10px;
+	padding-right: 10px;
+}
+

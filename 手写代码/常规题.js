@@ -243,16 +243,15 @@
 // 输入：s = "axc", t = "ahbgdc"
 // 输出：false
 // var isSubsequence = function(s, t) {
-//   let str = t
-//   for (let i=0;i<s.length;i++) {
-//     const item = s[i]
-//     const idx = str.indexOf(item)
-//     if (idx === -1) {
-//       return false
+//   let i = 0
+//   let j = 0
+//   while (i < s.length && j < t.length) {
+//     if (s[i] === t[j]) {
+//       i++
 //     }
-//     str = str.slice(idx + 1)
+//     j++
 //   }
-//   return true
+//   return i === s.length
 // };
 // isSubsequence('aaaaa', 'baaaa')
 
@@ -267,11 +266,57 @@
 // 随后，在第 4 天（股票价格 = 3）的时候买入，在第 5 天（股票价格 = 6）的时候卖出, 这笔交易所能获得利润 = 6 - 3 = 3。
 // 最大总利润为 4 + 3 = 7 。
 // 思路 只要第二天的股价比第一天的股价高就把这两天的差加上，最后就可以得出最大利润
-var maxProfit = function(prices) {
-  let res = 0
-  for (let i=1; i<prices.length; i++) {
-    res += Math.max(0, prices[i] - prices[i - 1])
-  }
-  return res
-};
-maxProfit([7,1,5,3,6,4])
+// var maxProfit = function(prices) {
+//   let res = 0
+//   for (let i=1; i<prices.length; i++) {
+//     res += Math.max(0, prices[i] - prices[i - 1])
+//   }
+//   return res
+// };
+// maxProfit([7,1,5,3,6,4])
+
+
+
+// var longestConsecutive = function(nums) {
+//   if (!nums.length) {
+//     return 0
+//   }
+//   let newList = Array.from(new Set(nums))
+//   newList = newList.sort((a, b) => a - b)
+//   let i=0 
+//   let j=i+1
+//   let long = 1
+//   while(i < newList.length && j < newList.length) {
+//     if (newList[j] === newList[j-1] + 1) {
+//       const newLong = j - i + 1
+//       long = Math.max(long, newLong) 
+//       j++
+//     } else {
+//       i = i + 1
+//       j = i + 1
+//     }
+//   }
+//   return long
+// };
+
+// longestConsecutive([-7,-1,3,-9,-4,7,-3,2,4,9,4,-9,8,-7,5,-1,-7])
+
+// 示例 1:
+
+// 输入:s = "abccccdd"
+// 输出:7
+// 解释:
+// 我们可以构造的最长的回文串是"dccaccd", 它的长度是 7。
+// 示例 2:
+
+// 输入:s = "a"
+// 输出:1
+// 解释：可以构造的最长回文串是"a"，它的长度是 1。
+
+
+
+
+
+
+
+

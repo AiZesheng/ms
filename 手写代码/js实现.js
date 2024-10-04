@@ -188,4 +188,39 @@
 
 // console.log(res, 'sss')
 
+// 实现debounce
+// function debounce(fn, wait, immediate) {
+//     let timer = null;
+//     return function(...args) {
+//         // 立即执行的功能(timer为空表示首次触发)
+//         if (immediate && !timer) {
+//             fn.apply(this, args);
+//         }
+//         // 有新的触发，则把定时器清空
+//         timer && clearTimeout(timer);
+//         // 重新计时
+//         timer = setTimeout(() => {
+//             fn.apply(this, args);
+//         }, wait)
+//     }
+// }
+
+// 实现throttle
+// function throttle(fn, wait) {
+//     let timer = null;
+//     return function(...args) {
+//         if (!timer) {
+//             timer = setTimeout(() => {
+//                 fn.apply(this, args);
+//                 timer = null;
+//             }, wait)
+//         }
+//     }
+// }
+
+// 口诀：debounce每次执行setTimeout前先clearTimeout，throttle每次执行setTimeout前判断timer是否为null，执行setTime后把timer改成null
+
+
+
+
 

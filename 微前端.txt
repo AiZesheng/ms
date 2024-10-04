@@ -51,7 +51,7 @@ export const start = async () => {
   // 手动构造一个CommonJS模块
   const module = { exports: {} }
   const exports = module.exports
-    scripts.forEach(item => {
+  scripts.forEach(item => {
     eval(item)
   })
   return module.exports
@@ -123,7 +123,7 @@ export function mount(props) {
 7、我在实践当中用过的微前端方案
 (1)、iframe 比较早期了，当时也是项目着急上线，所有的弹窗、popover、tooltip都有问题，还有通信
 (2)、拆多个子项目，头和侧边栏用npm包的方式发布成组件
-(3)、webpack5模块联邦，上线了一个子应用，但是没多久就更改方案了，因为这样要求子应用必须用webpack，而且当时遇到了样式冲突等问题
+(3)、一个仓库分成多个子项目，主应用(入口项目)用express中间件做转发，每个子应用独占端口
 (4)、qiankun
 
 

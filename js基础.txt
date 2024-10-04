@@ -10,8 +10,6 @@ Number、String、Boolean、Symbol、Null、Undefined、Object
 (3)、Set的属性及方法
 size、add()、delete()、has()、clear()、keys()、values()、forEach()
 
-
-
 3、es6的Map
 (1)、Map是用来存储键值对的集合，其中键的类型可以是任意类型，而普通对象的key只能是字符串或者是symbol
 (2)、Map属性及方法

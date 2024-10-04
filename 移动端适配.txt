@@ -1,0 +1,11 @@
+const setFontSize = () => {
+  const fontSize = window.screen.availWidth * 100 / 375
+  document.documentElement.style.fontSize = fontSize + 'px'
+}
+window.addEventListener('resize', setFontSize)
+setFontSize()
+
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1">
+
+width=device-width的意思是把手机浏览器的布局视口的宽度设置为当前设备的宽度，用于兼容不同分辨率
+initial-scale=1 指定页面初始缩放程度为1，避免页面在加载时出现自动缩放的情况
