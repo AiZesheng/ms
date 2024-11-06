@@ -80,6 +80,14 @@ div[data-qiankun="app-vue2"] {
 
 3、应用如何注册
 通过registerMicroApps
+registerMicroApps([
+  {
+    name: 'my-app', // app name registered
+    entry: 'http://localhost:3000/',
+    container: '#div1',
+    activeRule: '/sub-app1',
+  },
+]);
 
 4、应用之间如何通信
 通过actions通信 initGlobalState
@@ -115,7 +123,7 @@ export function mount(props) {
 (5)、微应用的 entry 路径最后面的 / 不可省略，否则 publicPath 会设置错误，例如子项的访问路径是 http://localhost:8080/app1,那么 entry 就是 http://localhost:8080/app1/。
 
 6、微前端各个框架的对比
-(1)、single-sap：它可以将多个单页应用集成为一个整体，但不支持Js沙箱和样式隔离，容易出现冲突。
+(1)、single-spa：它可以将多个单页应用集成为一个整体，但不支持Js沙箱和样式隔离，容易出现冲突。
 (2)、micro-app(京东)：是一个基于Web Components的微服务框架，支持多种前端框架，提供了丰富的功能和低接入成本，但功能丰富也带来了较多的配置和API。静态资源补全问题需要手动解决。
 (3)、qiankun：是基于single-spa的微前端实现库，提供了更高的灵活性和代码库隔离性，但适配成本较高，且存在一些限制。
 (4)、wujie(腾讯)：js放在iframe里执行，dom放在webCompoent渲染。优点是接入成本低，缺点是内存开销大，iframe到webComponent代理机制复杂，导致市面上主流的富文本编辑器无法在wujie中运行
@@ -126,7 +134,19 @@ export function mount(props) {
 (3)、一个仓库分成多个子项目，主应用(入口项目)用express中间件做转发，每个子应用独占端口
 (4)、qiankun
 
+8、vite子应用使用qiankun
+在vite.config.ts中配置插件
+import qiankun from 'vite-plugin-qiankun'
 
+export default {
+  plugins: [
+    qiankun('mySubApp') // 子应用名，与主应用注册时保持一致
+  ],
+  base: 'http://www.xxx.com' // 如果是生环境就用生产环境对应的域名
+}
 
+9、qiankun的沙箱隔离机制
+Qiankun使用JavaScript的Proxy对象来创建一个全局变量的代理，从而隔离子应用对全局变量的访问和修改。当子应用试图访问或修改全局变量时，Qiankun会捕获这些操作，并在沙箱环境中进行处理，确保不会影响到其他子应用
+快照沙箱：在子应用加载时对全局对象进行快照，保存全局对象的当前状态。在子应用卸载时，将全局对象恢复到加载时的状态。这种方式在浏览器不支持Proxy时使用
 
 

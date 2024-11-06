@@ -5,9 +5,6 @@
 
 // // js实现call
 // Function.prototype.call2 = function(context, ...args) {
-//   if (typeof context !== 'function') {
-//     throw new Error('不是函数')
-//   }
 //   context = context || window
 //   context.fn = this
 //   const res = context.fn(...args)
@@ -18,13 +15,10 @@
 // fn1.call2(fn1, { name: '123' })
 
 // // js实现apply
-// Function.prototype.apply2 = function(context, ...args) {
-//   if (typeof context !== 'function') {
-//     throw new Error('不是函数')
-//   }
-//   args = args && args[0] || []
+// Function.prototype.apply2 = function(context, argsList) {
+//   argsList = argsList || []
 //   context.fn = this
-//   const result = context.fn(...args)
+//   const result = context.fn(...argsList)
 //   delete context.fn
 //   return result
 // }
@@ -127,13 +121,12 @@
 
 // // 实现深拷贝
 // const cloneDeep = (data) => {
+// 	if (!isObject(data) || data === null) {
+// 		return data
+// 	}
 //   const result = Array.isArray(data) ? [] : {};
 //   for (let p in data) {
-//     if (typeof data[p] === "object" && data[p]) {
-//       result[p] = cloneDeep(data[p]);
-//     } else {
-//       result[p] = data[p];
-//     }
+//      result[p] = cloneDeep(data[p]);
 //   }
 //   return result;
 // };
@@ -220,6 +213,15 @@
 
 // 口诀：debounce每次执行setTimeout前先clearTimeout，throttle每次执行setTimeout前判断timer是否为null，执行setTime后把timer改成null
 
+// 手写实现new
+function myNew(Constructor, ...args) {
+  // 创建一个空的对象，继承构造函数的原型
+  let object = Object.create(Constructor.prototype);
+  // 调用构造函数，绑定this到新创建的对象
+  const result = Constructor.apply(object, args);
+  // 如果构造函数返回一个对象，则返回这个对象；否则返回新创建的对象
+  return result && typeof result === 'object' ? result : object;
+}
 
 
 

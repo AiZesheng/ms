@@ -34,8 +34,10 @@
 
 // bubbleSort(arr)
 
+// 注意，写快排和归并的时候 不要忘了判断数组长度小于1的情况 因为要递归
 
 // // 快速排序
+// 时间复杂度为O(n log n)
 // const arr = [2,1,5,4,3]
 // const quickSort = (arr) => {
 // 　if (arr.length <= 1) {
@@ -59,6 +61,7 @@
 // quickSort(arr)
 
 // // 归并排序
+// 时间复杂度O(nlogn)
 // const arr = [2,1,4,3,5]
 // const mergeSort = (arr) => {
 //   if (arr.length <= 1) {

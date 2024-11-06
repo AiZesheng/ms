@@ -69,9 +69,12 @@ GC优化策略：
 微任务包括：
 (1)、Promise回调：Promise对象的resolve或reject方法的回调函数
 (2)、MutationObserver回调：当DOM发生变化时触发的回调函数
-(3)、process.nextTick在nodeJS环境中将回调函数放入微任务队列
+(3)、process.nextTick在nodeJS环境中将回调函数放入微任务队列  process.nextTick优先级高于promise.then
 
 由于微任务是相对较小的任务，所以微任务的优先级高于宏任务(promise.then优先于setTimeout执行)
+
+10、为什么js有浮点计算精度问题
+因为js的浮点数只能表示近似值，比如0.1，0.2在js底层不能精确表示为二进制数
 
 
 

@@ -19,3 +19,11 @@ ReactDOMServer.renderToString(element)
 什么是SSG
 Static Site Generation一种在构建时生成静态html技术，开发者需编写一些模板文件和数据文件，通过构建工具将这些文件渲染成静态html文件。
 SSG只适合那些迭代不频繁的项目，如果是迭代频繁的项目，开发者可能需要不停地改模板。
+
+为什么ssr有利于seo
+因为ssr生成的html是服务端直出的，这使得搜索引擎爬虫可以直接读取和索引页面内容，无需执行js
+
+
+服务端渲染的降级策略
+基于next9写了一个框架，该框架可实现打包生成两份代码，一份用于ssr一份用于csr。并且支持本地直接访问csr。
+服务器nginx配置如果ssr是500，就把流量打到csr

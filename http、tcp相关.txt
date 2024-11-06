@@ -37,7 +37,13 @@ http和https使用的是完全不同的连接方式用的端口也不一样,前�
 HTTP1.0 定义了三种请求方法： GET, POST 和 HEAD方法。
 HTTP1.1 新增了六种请求方法：OPTIONS、PUT、PATCH、DELETE、TRACE 和 CONNECT 方法。
 
+9、tcp和udp的区别
+TCP面向连接，可靠但慢，适用于文件传输等；
+UDP无连接，高效但不可靠，适用于实时通信。
+TCP首部开销大，不支持多播；UDP开销小，支持多播。
 
+10、OSI七层模型
+应用层、表示层、会话层、传输层、网络层、数据链路层、物理层
 
 
 
