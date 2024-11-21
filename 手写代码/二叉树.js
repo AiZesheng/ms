@@ -282,17 +282,17 @@ var lowestCommonAncestor = function(root, p, q) {
  * @return {boolean}
  */
 var isValidBST = function(root) {
-  const list = []
+  let currentValue
   let ans = true
   const inorder = (root) => {
     if (!root) {
       return
     }
     inorder(root.left)
-    if (list.length && root.val <= list[list.length - 1]) {
-      ans = false
+    if (root.val <= currentValue && currentValue !== undefined) {
+        ans = false
     }
-    root.val && list.push(root.val)
+    currentValue = root.val
     inorder(root.right)
   }
   inorder(root)
@@ -321,7 +321,7 @@ var diameterOfBinaryTree = function(root) {
 };
 
 // 二叉树的最大路径和
-// 思路：求左右子树的最大路径和
+// 思路：求左右子树的最大路径和，然后相加，再加上根节点值
 /**
  * @param {TreeNode} root
  * @return {number}

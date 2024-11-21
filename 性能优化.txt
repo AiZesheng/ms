@@ -57,6 +57,12 @@ observer.observe({ entryTypes: ["longtask"] });
 (2)、对于promise异常可以用window.addEventListener('unhandledrejection')事件
 (3)、对于接口报错比较简单，在公共的post方法的catch里监控
 
+13、preload与prefetch的区别
+(1)、preload 是一个新的 Web 标准，在页面生命周期中提前加载你指定的资源，同时确保在浏览器的主要渲染机制启动之前。
+通常使用 preload 是用来加载图片、CSS、JavaScript和字体文件。
+<link rel="preload" href="style.css" as="style">
+(2)、prefetch 是提示浏览器，用户在下次导航时可能会使用的资源，因此浏览器为了提升性能可以提前加载、缓存资源。prefetch 的加载优先级相对较低，浏览器在空闲的时候才会在后台加载。
+<link rel="prefetch" href="/myscript.js" as="script">
 
 
 其它：

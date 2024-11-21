@@ -13,3 +13,8 @@ Block Formatting Context，块级格式化上下文，独立的布局环境，�
 flex-grow: 1表示项目的放大比例。当存在剩余空间时，项目会等比例增长，默认值为1。
 flex-shrink: 1表示项目的缩小比例。如果容器空间不足，项目会缩小以适应容器，默认值为1。
 flex-basis: 0%表示在分配多余空间之前，项目本身的大小为auto，即项目本身的大小不会影响分配的空间。
+
+5、grid布局，常用于商品列表
+display: grid;
+grid-template-columns: repeat(3, 1fr); /* 三列布局 */
+grid-gap: 10px; /* 列与列的间隔 */

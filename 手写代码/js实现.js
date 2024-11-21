@@ -119,6 +119,48 @@
 // let obj2 = [{ a: 2 }]
 // console.log(isEqual(2, obj2))
 
+// js实现isEqual考虑循环引用
+// const isEqual = (obj1, obj2) => {
+//   const m = new WeakMap()
+//   const compare = (obj1, obj2) => {
+//     const isObject = data => typeof data === 'object'
+//     debugger
+//     if (obj1 === obj2) {
+//       return true
+//     }
+//     if (!isObject(obj1) || !isObject(obj2) || !obj1 || !obj2) {
+//       return obj1 === obj2
+//     }
+//     if (Object.keys(obj1).length !== Object.keys(obj2).length) {
+//       return false
+//     }
+//     if (m.has(obj1)) {
+//       if (m.get(obj1) === obj2) {
+//         return true
+//       }
+//       return false
+//     }
+//     m.set(obj1, obj2)
+//     for (let k in obj1) {
+//       if (!compare(obj1[k], obj2[k], m)) {
+//         return false
+//       }
+//     }
+//     return true
+//   }
+//   return compare(obj1, obj2)
+// }
+
+// const obj1 = {
+//   a: 1
+// }
+// obj1.b = obj1
+// const obj2 = {
+//   a: 1,
+//   b: obj1
+// }
+// isEqual(obj1, obj2)
+
 // // 实现深拷贝
 // const cloneDeep = (data) => {
 // 	if (!isObject(data) || data === null) {
@@ -223,6 +265,45 @@ function myNew(Constructor, ...args) {
   return result && typeof result === 'object' ? result : object;
 }
 
+// 实现EventEmitter
+class EventEmitter {
+  constructor() {
+    this._events = {};
+  }
+
+  on(event, listener) {
+    if (typeof listener !== 'function') {
+      throw new TypeError('listener must be a function');
+    }
+    if (!this._events[event]) {
+      this._events[event] = [];
+    }
+    this._events[event].push(listener);
+    return this;
+  }
+
+  emit(event, ...args) {
+    if (this._events[event]) {
+      this._events[event].forEach(listener => {
+        listener.apply(this, args);
+      });
+    }
+    return true;
+  }
+
+  off(event, listener) {
+    if (this._events[event]) {
+      this._events[event] = this._events[event].filter(l => l !== listener);
+    }
+    return this;
+  }
+}
+
+// 使用示例
+const emitter = new EventEmitter();
+
+emitter.on('event', () => console.log('Event occurred!'));
+emitter.emit('event'); // 输出: Event occurred!
 
 
 

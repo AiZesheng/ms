@@ -5,6 +5,7 @@ react存hook对象用的是链表结构，fiber.memorizedState(hook0)->fiber.mem
 2、react setState原理
 setState本质是通过一个队列机制实现state更新的。 执行setState时，会将需要更新的state合并后放入状态队列，而不会立刻更新state，
 队列机制可以批量更新state
+setState在原生事件、setTimeout、setInterval、promise等异步操作中，state会同步更新，这是因为当执行到setTimeout的时候，会将函数块放入宏任务队列里暂不执行，先去执行主进程代码块，等主进程执行完了，isBatchingUpdates变为了false，导致最后去执行队列里的setState时候，表现就会和原生事件一样，同步拿到最新的state的值
 
 3、函数组件与类组件的区别
 function component 无状态组件     除非使用hooks

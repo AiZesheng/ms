@@ -136,8 +136,8 @@ var hasCycle = function(head) {
   return false
 };
 
-// 判断两个链表是否相交
-// 思路：哈希表，把第一个链表的所有节点都存入哈希表，遍历第二个，如果哈希表中有第二个链表的某个节点就返回true
+// 判断两个链表是否相交，如果有相交则返回相交的第一个节点，否则返回null
+// 思路：哈希表，把第一个链表的所有节点都存入哈希表，遍历第二个，如果哈希表中有第二个链表的某个节点就返回该节点
 /**
  * @param {ListNode} headA
  * @param {ListNode} headB
@@ -158,6 +158,36 @@ var getIntersectionNode = function (headA, headB) {
     point = point.next
   }
   return null
+};
+
+// 合并两个有序链表
+/**
+ * @param {ListNode} list1
+ * @param {ListNode} list2
+ * @return {ListNode}
+ */
+var mergeTwoLists = function(l1, l2) {
+  if (!l1 || !l2) {
+    return l1 || l2
+  }
+  let ans = new ListNode()
+  let point = ans
+  while(l1 && l2) {
+    let node = new ListNode()
+    if (l1.val < l2.val) {
+      node.val = l1.val
+      l1 = l1.next
+    } else {
+      node.val = l2.val
+      l2 = l2.next
+    }
+    point.next = node
+    point = point.next
+  }
+  if (l1 || l2) {
+    point.next = l1 || l2
+  }
+  return ans.next
 };
 
 
