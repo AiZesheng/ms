@@ -25,3 +25,6 @@ ETag是一个可以与Web资源关联的记号
 
 (4)什么是if-none-match
 用来询问服务器当前版本是否可用
+
+
+策略缓存：使用service-worker做离线化缓存(PWA)、移动端离线包

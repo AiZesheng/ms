@@ -6,9 +6,12 @@
 
 3、取得了什么成果
 
-首屏加载时间过长(First Contentful Paint) 约1点多秒  使用ssr优化，优化完约0.4秒
+渲染优化：首屏加载时间过长(First Contentful Paint) 约1点多秒  使用ssr优化，优化完约0.4秒
 针对广告详情页的Cumulative Layout Shift指标 使用骨架屏进行优化
-通过chrome-dev-tools查看各个包资源发现有些包体积校大，下载较慢 阻塞网面渲染 使用webpack-bundle-analyzer查看各个包体积
+
+资源优化：通过chrome-dev-tools查看各个包资源发现有些包体积校大，下载较慢 阻塞网面渲染 使用webpack-bundle-analyzer查看各个包体积。所有静态资源上传cdn
+
+代码优化：动态import等、通过状态管理减少重复渲染
 
 4、前端性能预警平台需要对哪些内容做预警
 白屏时间，首屏时间，页面卡顿，报错监控
@@ -76,15 +79,19 @@ DCL（DOMContentLoaded），DOM解析完毕。
 
 
 FP（First Paint），表示渲染出第一个像素点。FP一般在HTML解析完成或者解析一部分时候触发。
+performance.getEntries('paint').filter(item => item.name === 'first-paint')[0].startTime
 
 
 FCP（First Contentful Paint），表示渲染出第一个内容，这里的"内容"可以是文本、图片、canvas。
+performance.getEntries('paint').filter(item => item.name === 'first-contentful-paint')[0].startTime
 
 
 FMP（First Meaningful Paint），首次渲染有意义的内容的时间，"有意义"没有一个标准的定义，FMP的计算方法也很复杂。
 
 
 LCP（largest contentful Paint），最大内容渲染时间。
+
+Cumulative Layout Shift 布局偏移 越小越好 使用骨架屏
 
 
 

@@ -307,3 +307,53 @@ emitter.emit('event'); // 输出: Event occurred!
 
 
 
+// 实现一个支持最大并发数的并发函数，不考虑失败的情况
+const asyncQueue = (fnReturnPromise, limit) => {
+  // 当前并发数
+  let count = 0
+  // 并发任务队列
+  let taskList = []
+
+  const createTask = (id, resolve) => {
+    return () => {
+      fnReturnPromise(id).then((res) => {
+        resolve(res)
+        count--
+        if (taskList.length) {
+          const task = taskList.shift()
+          task()
+        }
+      })
+      count++
+    }
+  }
+  return (id) => {
+    return new Promise((resolve) => {
+      const task = createTask(id, resolve)
+      if (count > limit) {
+        taskList.push(task)
+      } else {
+        task()
+      }
+    })
+  }
+}
+
+const getBlog = (id) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(id)
+    }, 1000)
+  })
+}
+
+const getBlogLimit10 = asyncQueue(getBlog, 3)
+
+for (let i=0; i<10; i++) {
+  getBlogLimit10(i).then(res => {
+    console.log(res)
+  })
+}
+
+
+

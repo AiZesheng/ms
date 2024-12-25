@@ -45,5 +45,32 @@ TCP首部开销大，不支持多播；UDP开销小，支持多播。
 10、OSI七层模型
 应用层、表示层、会话层、传输层、网络层、数据链路层、物理层
 
+11、SSE与websocket的区别
+(1)、SSE是单向通信，只能从服务器到客户端发送数据。websoket是全双工通信，支持服务器和客户端之间的双向通信
+(2)、SSE只能发送文本数据，websocket可以发送文本和二进制数据
+(3)、协议不同：SSE是基于http协议的，websocket是ws或wss(加密或不加密)
+(4)、SSE支持自动重连，websocket不支持自动重连
+(5)、适用场景不同：SSE适合股票详情、新闻推送等，websocket适合在线游戏，实时聊天等
+其它：各自API var ws = new WebSocket('ws://localhost:8080'); 
+
+websocket:
+var ws = new WebSocket('ws://localhost:8080');
+ws.onopen = function () {
+  console.log('ws onopen');
+  ws.send('from client: hello');
+};
+ws.onmessage = function (e) {
+  console.log('ws onmessage');
+  console.log('from server: ' + e.data);
+};
+
+SSE: 
+const eventSource = new EventSource('/api/data');
+
+eventSource.addEventListener('message', (event) => {
+  console.log('Received message data:', event.data);
+});
+
+SSE服务端Content-Type为text/event-stream
 
 
